@@ -1,0 +1,12 @@
+a) 
+ [ [1,2,3] , [4,5,6] , [7,8,0] ]
+ Estado inicial: coiso
+ Teste objetivo: Estado = [[1,2,3], [4,5,6], [7,8,0]]
+
+ Operadores:
+  -> Cima: 0 não esta na primeira fila, 0 troca com o numero de cima, 1
+  -> Baixo: 0 não esta na ultima fila, 0 troca com o numero de baixo, 1 
+  -> Esquerda: 0 não esta na primeira coluna, 0 troca com o numero à esquerda, 1
+  -> Direita: 0 não esta na ultima coluna, 0 troca com o numero à esquerda, 1
+
+b)
