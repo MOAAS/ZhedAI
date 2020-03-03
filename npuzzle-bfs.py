@@ -8,9 +8,14 @@ class State:
         self.y = y
 
 class Node:
-  def __init__(self, state, parent):
+  def __init__(self, state, parent, dist):
     self.state = state
     self.parent = parent
+    self.dist = dist
+    self.height = 0
+    while parent:
+      self.height += 1
+      parent = parent.parent
 
 initial_state = State([    
     [5,1,3,4], 
@@ -20,6 +25,15 @@ initial_state = State([
 ], 1, 1)
 
 final_state_matrix = [[1,2,3,4], [5,6,7,8], [9,10,11,12],[13,14,15,0]]
+
+"""
+initial_state = State([    
+    [1,2,3], 
+    [0,5,6], 
+    [4,7,8]
+], 0, 1)
+final_state_matrix = [[1,2,3], [4,5,6], [7,8,0]]
+"""
 
 puzzle_size = len(initial_state.matrix)
 
@@ -72,24 +86,59 @@ def getPossibleMoves(state):
     if canMoveDown(state): moves.append(moveDown(state)) 
     return moves
     
-def breadth_first(state):
-    queue = [Node(state, None)]
+  
+def solve_search(state):
+    queue = [Node(state, None, foraDoSitio(state))]
         
     while queue:
-        node = queue.pop(0)
+        ### Depending on solving method, determine expanded node
 
+        # BFS
+        # node = queue.pop(0)
+
+        # Greedy Fora do Sitio
+        # greediestIndex = 0
+        # greediestValue = queue[0].dist
+        # for i in range(len(queue)):
+        #     if queue[i].dist < greediestValue: 
+        #         greediestIndex = i
+        #         greediestValue = queue[i].dist
+        # node = queue.pop(greediestIndex)
+        
+
+        # A* Fora do Sitio
+        greediestIndex = 0
+        greediestValue = queue[0].dist + queue[0].height
+        for i in range(len(queue)):
+            if queue[i].dist + queue[i].height < greediestValue: 
+                greediestIndex = i
+                greediestValue = queue[i].dist + queue[i].height
+        node = queue.pop(greediestIndex)
+
+        # Check if final state
         if (node.state.matrix == final_state_matrix):
             return node
 
-        moves = getPossibleMoves(node.state)
-        for move in moves:
-            queue.append(Node(move, node))
+        # Expand node
+        states = getPossibleMoves(node.state)
+        for state in states:
+            queue.append(Node(state, node, foraDoSitio(state)))
 
-print("BREADTH")
-node = breadth_first(initial_state)
+
+def foraDoSitio(state):
+    numForaDoSitio = 0
+    for y in range(puzzle_size):
+      for x in range(puzzle_size):
+        if (state.matrix[y][x] != final_state_matrix[y][x]):
+            numForaDoSitio += 1
+    return numForaDoSitio
+
+
+print("Search")
+node = solve_search(initial_state)
+print("End Search")
 
 print("Result")
 while node:
     printMatrix(node.state.matrix)
     node = node.parent
-print("END BREADTH")
