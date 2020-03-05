@@ -127,3 +127,6 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+testzhed/bin/
+testzhed/obj/
+testzhed/testzhed.csproj
