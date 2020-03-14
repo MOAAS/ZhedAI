@@ -1,132 +1,135 @@
 using System;
 using System.Collections.Generic;
 
-namespace HelloWorld
+namespace ZhedSolver
 {
-    public class MyBoard
-    {
-        private List<List<int>> board = new List<List<int>>{};
-        private int width,height;
+    public class ZhedBoard
+    {               
+        private const int EMPTY_TILE = 0;
+        private const int USED_TILE = -1;
+        private const int FINISH_TILE = -2;
+        private const int WINNER_TILE = -3;
+
+        private int width, height;
         private List<int[]> valueTiles;
         private List<int[]> finishTiles;
         
-        public MyBoard(int width, int height, List<int[]> valueTiles, List<int[]> finishTiles){
+        private List<List<int>> board = new List<List<int>>{};
+
+        public bool isOver { get; private set; }
+
+        public ZhedBoard(int width, int height, List<int[]> valueTiles, List<int[]> finishTiles){
             this.width = width;
             this.height = height;
             this.valueTiles = valueTiles;
             this.finishTiles = finishTiles;
-            makeEmptyBoard();
-            insertValueTiles();
-            insertFinishTiles();
+            this.ResetBoard();
         }
 
-        private void makeEmptyBoard(){
-            for(var i = 0; i < this.width; i++){
+        public ZhedBoard(String file) {
+
+        }
+
+        private void ResetBoard(){
+            for(int i = 0; i < this.height; i++){
                 this.board.Add(new List<int>());
-                for(var j = 0; j < this.height; j++){
-                      this.board[i].Add(0);
+                for(int j = 0; j < this.width; j++){
+                    this.board[i].Add(EMPTY_TILE);
                 }
             }
-        }
-        private void insertValueTiles(){
-            foreach (var tile in valueTiles)
-                this.board[tile[0]][tile[1]] = tile[2];
+
+            foreach (int[] tile in valueTiles)
+                this.board[tile[1]][tile[0]] = tile[2];
+
+            foreach (int[] tile in finishTiles)
+                this.board[tile[1]][tile[0]] = FINISH_TILE;
         }
 
-        private void insertFinishTiles(){
-            foreach (var tile in finishTiles)
-                this.board[tile[0]][tile[1]] = -2;
-        }
-
-        public void print(){
-            for(int j=0; j < height; j++){
-                for(int i = 0; i < width; i++){
+        public void PrintBoard() {
+            for(int i = 0; i < height; i++){
+                for(int j = 0; j < width; j++){
                     Console.Write(board[i][j]);
                     Console.Write(" ");
                 }
                 Console.WriteLine();
             }
+            Console.WriteLine();
         }
 
-        public void goUp(int[] coordinates){
-            int x = coordinates[0];
-            int y = coordinates[1];
-            int tileValue = board[x][y];
-            if(tileValue>0){
-                board[x][y] = -1;
-                untapLoop(tileValue,coordinates,moveUp);
+        public void GoUp(Coords coords) {
+            SpreadTile(coords, Coords.MoveUp);
+        }
+
+        public void GoDown(Coords coords){
+            SpreadTile(coords, Coords.MoveDown);
+        }
+
+        public void GoLeft(Coords coords){
+            SpreadTile(coords, Coords.MoveLeft);
+        }
+
+        public void GoRight(Coords coords){
+            SpreadTile(coords, Coords.MoveRight);
+        }
+
+        private void SpreadTile(Coords coords, Func<Coords, Coords> moveFunction){
+            int tileValue = TileValue(coords);
+            if(tileValue <= 0) {
+                Console.WriteLine("Woah gamer! Calm down your horses");
+                return;
             }
-        }
+            SetTile(coords, USED_TILE);
 
-        public void goDown(int[] coordinates){
-            int x = coordinates[0];
-            int y = coordinates[1];
-            int tileValue = board[x][y];
-            if(tileValue>0){
-                board[x][y] = -1;
-                untapLoop(tileValue,coordinates,moveDown);
-            }
-        }
-
-        public void goLeft(int[] coordinates){
-            int x = coordinates[0];
-            int y = coordinates[1];
-            int tileValue = board[x][y];
-            if(tileValue>0){
-                board[x][y] = -1;
-                untapLoop(tileValue,coordinates,moveLeft);
-            }
-        }
-
-        public void goRight(int[] coordinates){
-            int x = coordinates[0];
-            int y = coordinates[1];
-            int tileValue = board[x][y];
-            if(tileValue>0){
-                board[x][y] = -1;
-                untapLoop(tileValue,coordinates,moveRight);
-            }
-        }
-
-
-        private int[] moveUp(int[] coordinates){
-            coordinates[1]--;
-            return coordinates;
-        }
-        private int[] moveDown(int[] coordinates){
-            coordinates[1]++;
-            return coordinates;
-        }
-        private int[] moveLeft(int[] coordinates){
-            coordinates[0]--;
-            return coordinates;
-        }
-        private int[] moveRight(int[] coordinates){
-            coordinates[0]++;
-            return coordinates;
-        }
-        private void untapLoop(int tileValue,int[] coordinates,Func<int[], int[]> moveFunction){
             while(tileValue>0){
-                coordinates = moveFunction(coordinates);
-                if(!inbounds(coordinates))
+                coords = moveFunction(coords);
+                if(!inbounds(coords))
                     break;
-                if(board[coordinates[0]][coordinates[1]]==0){
-                    board[coordinates[0]][coordinates[1]]=-1;
-                    tileValue--;
-                }
-                if(board[coordinates[0]][coordinates[1]]==-2){
-                    board[coordinates[0]][coordinates[1]]=-3;
-                    Console.WriteLine("Finished");
+
+                switch (TileValue(coords)) {
+                    case EMPTY_TILE: SetTile(coords, USED_TILE); tileValue--; break;
+                    case FINISH_TILE: SetTile(coords, WINNER_TILE); this.isOver = true; break;
+                    default: break;
                 }
             }
         }
 
-        public bool inbounds(int[] coordinates){
-            int x = coordinates[0];
-            int y = coordinates[1];
-            if(x<0 || y<0 || x>=width || y>=height)
-                return false;
-            return true;
+        public bool inbounds(Coords coords){
+            return coords.x >= 0 && coords.y >= 0 && coords.x < width && coords.y < height;
+        }
+
+        private int TileValue(Coords coords) {
+            return this.board[coords.y][coords.x];
+        }
+
+        private int SetTile(Coords coords, int value) {
+            return this.board[coords.y][coords.x] = value;
         }
     }
+
+
+    public class Coords {
+        public int x { get; set; }
+        public int y { get; set; }
+
+        public Coords(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+
+        public static Coords MoveUp(Coords coords) {
+            return new Coords(coords.x, coords.y - 1);
+        }
+
+        public static Coords MoveDown(Coords coords) {
+            return new Coords(coords.x, coords.y + 1);
+        }
+
+        public static Coords MoveLeft(Coords coords) {
+            return new Coords(coords.x - 1, coords.y);
+        }
+        
+        public static Coords MoveRight(Coords coords) {
+            return new Coords(coords.x + 1, coords.y);
+        }
+    };
 }

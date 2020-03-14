@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace HelloWorld
+namespace ZhedSolver
 {
     class Program
     {
@@ -17,20 +17,30 @@ namespace HelloWorld
                 new int[] {4, 0}
             };
 
-            var b1 = new MyBoard(5,4,valueTiles,finishTiles);
-            b1.print();
-            
-            b1.goLeft(new int[]{2,2});
-            Console.WriteLine();
-            b1.print();
+            ZhedBoard board = new ZhedBoard(5, 4, valueTiles, finishTiles);
 
-            b1.goUp(new int[]{1,3});
-            Console.WriteLine();
-            b1.print();
+            while (!board.isOver) {
+                board.PrintBoard();
+                Console.Write("Select tile (X, Y): ");
+                string[] coordsInput = Console.ReadLine().Split();
+                int X, Y;
+                if (coordsInput.Length != 2 || !int.TryParse(coordsInput[0], out X) || !int.TryParse(coordsInput[1], out Y)) {
+                    Console.WriteLine("Invalid input");
+                    continue;
+                }
+                Console.Write("Select direction (U D L R): ");
+                char dirInput = Console.ReadKey().KeyChar;
+                Console.WriteLine();
+                switch(char.ToUpper(dirInput)) {
+                    case 'U': board.GoUp(new Coords(X, Y)); break;
+                    case 'D': board.GoDown(new Coords(X, Y)); break;
+                    case 'L': board.GoLeft(new Coords(X, Y)); break;
+                    case 'R': board.GoRight(new Coords(X, Y)); break;
+                    default: Console.WriteLine("Invalid direction."); break;
+                }
+            }
 
-            b1.goRight(new int[]{0,0});
-            Console.WriteLine();
-            b1.print();
+            Console.WriteLine("You win!");
         }
     }
 }
