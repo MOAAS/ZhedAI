@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.IO;  
+using System.Linq;
 
 namespace ZhedSolver
 {
@@ -11,8 +13,8 @@ namespace ZhedSolver
         private const int WINNER_TILE = -3;
 
         private int width, height;
-        private List<int[]> valueTiles;
-        private List<int[]> finishTiles;
+        private List<int[]> valueTiles = new List<int[]>{}; 
+        private List<int[]> finishTiles = new List<int[]>{}; 
         
         private List<List<int>> board = new List<List<int>>{};
 
@@ -27,7 +29,22 @@ namespace ZhedSolver
         }
 
         public ZhedBoard(String file) {
+            string[] lines = File.ReadAllLines(file);  
 
+            this.width = int.Parse(lines[0].Split()[0]);
+            this.height = int.Parse(lines[0].Split()[1]);
+
+            foreach (string line in lines.Skip(1).ToArray())  {
+                string[] nums = line.Split();
+                int x = int.Parse(nums[0]);
+                int y = int.Parse(nums[1]);
+                int value = int.Parse(nums[2]);
+                if (value > 0)
+                    valueTiles.Add(new int[]{x, y, value});        
+                else finishTiles.Add(new int[]{x, y});
+            }
+
+            this.ResetBoard();
         }
 
         private void ResetBoard(){
@@ -46,10 +63,23 @@ namespace ZhedSolver
         }
 
         public void PrintBoard() {
+            Console.Write("  |");
+            for(int j = 0; j < width; j++) {
+                Console.Write("  " + j);
+            }
+            Console.Write("\n--+");
+            for(int j = 0; j < width; j++) {
+                Console.Write("---");
+            }
+            Console.WriteLine();
+
+
             for(int i = 0; i < height; i++){
+                Console.Write(i + " | ");
                 for(int j = 0; j < width; j++){
-                    Console.Write(board[i][j]);
-                    Console.Write(" ");
+                    if (board[i][j] >= 0)
+                        Console.Write(" ");
+                    Console.Write(board[i][j] + " ");
                 }
                 Console.WriteLine();
             }

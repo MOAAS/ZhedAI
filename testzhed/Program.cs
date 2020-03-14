@@ -17,7 +17,9 @@ namespace ZhedSolver
                 new int[] {4, 0}
             };
 
-            ZhedBoard board = new ZhedBoard(5, 4, valueTiles, finishTiles);
+          //  ZhedBoard board = new ZhedBoard(5, 4, valueTiles, finishTiles);
+
+            ZhedBoard board = new ZhedBoard("levels/41.txt");
 
             while (!board.isOver) {
                 board.PrintBoard();
@@ -41,6 +43,7 @@ namespace ZhedSolver
             }
 
             Console.WriteLine("You win!");
+            board.PrintBoard();
         }
     }
 }
