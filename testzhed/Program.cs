@@ -1,20 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 
-enum Options {
-    Play,
-    Solve,
-    Invalid
-}
-
-enum Operations {
-    Up, 
-    Down, 
-    Left,
-    Right,
-    Invalid
-}
-
 namespace ZhedSolver
 {
     class Program
@@ -34,20 +20,20 @@ namespace ZhedSolver
             Solver solver = new Solver(board);
 
             Menu menu = new Menu();
-            menu.showMenu();
+            menu.ShowMenu();
             Options option;
 
             do {
-                option = menu.getOption();
+                option = menu.GetOption();
             } while(option == Options.Invalid);
 
             switch(option) {
-                case Options.Play: play(board); break;
-                case Options.Solve: showZhedSteps(solver); break;
+                case Options.Play: Play(board); break;
+                case Options.Solve: ShowZhedSteps(solver); break;
             }
         }
 
-        private static void play(ZhedBoard board) {
+        private static void Play(ZhedBoard board) {
 
             while (!board.isOver) {
                 board.PrintBoard();
@@ -62,7 +48,7 @@ namespace ZhedSolver
                 Console.Write("Select direction (U D L R): ");
                 char dirInput = Console.ReadKey().KeyChar;
                 Console.WriteLine();
-                
+
                 switch(char.ToUpper(dirInput)) {
                     case 'U': board.GoUp(new Coords(X, Y)); break;
                     case 'D': board.GoDown(new Coords(X, Y)); break;
@@ -76,8 +62,11 @@ namespace ZhedSolver
             board.PrintBoard();
         }
 
-        private static void showZhedSteps(Solver solver) {
-            List<Tuple<Coords, Operations>> steps = solver.solve();
+        private static void ShowZhedSteps(Solver solver) {
+            List<ZhedStep> steps = solver.Solve(SearchMethod.BFS);
+
+            foreach (ZhedStep step in steps) 
+                step.Print(); 
         }
     } 
 

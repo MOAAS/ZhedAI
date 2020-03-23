@@ -2,8 +2,14 @@ using System;
 
 namespace ZhedSolver
 {
+    enum Options {
+        Play,
+        Solve,
+        Invalid
+    }
+
     class Menu {
-        public void showMenu() {
+        public void ShowMenu() {
             Console.WriteLine("Zhed");
             Console.WriteLine("---------------------");
             Console.WriteLine("1 - Solve Puzzle");
@@ -12,7 +18,7 @@ namespace ZhedSolver
             Console.Write("Choose an option: ");
         }
 
-        public Options getOption() {
+        public Options GetOption() {
             char dirInput = Console.ReadKey().KeyChar;
             Console.WriteLine();
             switch (char.ToUpper(dirInput)) {

@@ -28,6 +28,16 @@ namespace ZhedSolver
             this.ResetBoard();
         }
 
+        public ZhedBoard(ZhedBoard zhedBoard) {
+            this.width = zhedBoard.width;
+            this.height = zhedBoard.height;
+            this.board = new List<List<int>>();
+
+            for(int i = 0; i < this.height; i ++) {
+                this.board.Add(new List<int>(zhedBoard.board[i]));
+            }
+        }
+
         public ZhedBoard(String file) {
             string[] lines = File.ReadAllLines(file);  
 
@@ -102,7 +112,7 @@ namespace ZhedSolver
             SpreadTile(coords, Coords.MoveRight);
         }
 
-        private void SpreadTile(Coords coords, Func<Coords, Coords> moveFunction){
+        public void SpreadTile(Coords coords, Func<Coords, Coords> moveFunction){
             int tileValue = TileValue(coords);
             if(tileValue <= 0) {
                 Console.WriteLine("Woah gamer! Calm down your horses");
@@ -133,6 +143,17 @@ namespace ZhedSolver
 
         private int SetTile(Coords coords, int value) {
             return this.board[coords.y][coords.x] = value;
+        }
+
+        public List<Coords> GetPositiveTiles() {
+            List<Coords> result = new List<Coords>();
+            for(int y = 0; y < this.height; y++){
+                for(int x = 0; x < this.width; x++){
+                    if(this.board[y][x] > 0)
+                        result.Add(new Coords(x, y));
+                }
+            }
+            return result;
         }
     }
 
