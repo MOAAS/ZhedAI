@@ -40,17 +40,6 @@ For each level, the puzzle size and the numbered cells' positions are diferent. 
 
 ---
 
-## Operators
-
-| **Operator** | **Pre-conditions**​ | 
-| --- | --- | --- | --- |
-| Move [X, Y] Up | Board(X, Y) > 0 | 
-| Move [X,Y] Down | Board(X,Y) > 0​ |
-| Move [X,Y] Left | Board(X,Y) > 0 |
-| Move [X,Y] Right | Board(X,Y) > 0 |
-
----
-
 ## Heuristics
 
 - We plan on implementing several search algorithms, such as breadth-first, depth-first, greedy, A*, and comparing the results we achieve.
