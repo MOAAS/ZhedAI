@@ -26,7 +26,7 @@ namespace ZhedSolver
         }
 
         public List<ZhedStep> Solve(SearchMethod searchMethod) {
-            Func<ZhedBoard, int> heuristic = Heuristic2;
+            Func<ZhedBoard, int> heuristic = Heuristic3;
 
 
             PriorityQueue<Node> queue = new PriorityQueue<Node>();
@@ -37,6 +37,10 @@ namespace ZhedSolver
             while(queue.Count > 0) {
                 visitedNodes++;
                 Node nextNode = queue.Dequeue();
+
+                Console.WriteLine("Visit number {0}", visitedNodes); nextNode.board.PrintBoard();
+                Console.WriteLine("Value of board: {0}" , nextNode.board.getBoardMaxValue());
+
                 if (nextNode.board.isOver) {
                     Console.WriteLine("Visited {0} nodes", visitedNodes);
                     return GetPath(nextNode);
@@ -70,8 +74,8 @@ namespace ZhedSolver
         public int Heuristic2(ZhedBoard board) {
             if (board.isOver)
                 return 0;
-            List<int[]> valueTiles = board.valueTiles;
-            List<int[]> finishTiles = board.finishTiles;
+            List<int[]> valueTiles = board.GetValueTiles2();
+            List<int[]> finishTiles = board.GetFinishTiles();
 
             int numberOfTilesOnTheZhedBoardThatNotOnlyHaveANaturalNumberOnThemButAlsoHappenToBeAlignedThatIsOnTheSameRowOrColumnWithAFinishTile = 0;
             foreach (int[] finishTile in finishTiles)
@@ -81,6 +85,12 @@ namespace ZhedSolver
             if (numberOfTilesOnTheZhedBoardThatNotOnlyHaveANaturalNumberOnThemButAlsoHappenToBeAlignedThatIsOnTheSameRowOrColumnWithAFinishTile == 0)
                 return int.MaxValue;
             return 1 / numberOfTilesOnTheZhedBoardThatNotOnlyHaveANaturalNumberOnThemButAlsoHappenToBeAlignedThatIsOnTheSameRowOrColumnWithAFinishTile;
+        }
+
+        public int Heuristic3(ZhedBoard board){
+            if(board.isOver)
+                return 0;
+            return 1 / board.getBoardMaxValue();
         }
 
         /*
@@ -132,9 +142,9 @@ namespace ZhedSolver
 
         private List<Node> GetNextGeneration(Node parent, Func<ZhedBoard, int> heuristic) {
             List<Node> nextGeneration = new List<Node>();
-            List<Coords> positiveTiles = parent.board.GetPositiveTiles();
+            List<Coords> valueTiles = parent.board.GetValueTiles();
 
-            foreach (Coords coords in positiveTiles) {
+            foreach (Coords coords in valueTiles) {
                 ZhedBoard up = parent.board.GoUp(coords);
                 ZhedBoard down = parent.board.GoDown(coords);
                 ZhedBoard left = parent.board.GoLeft(coords);
@@ -143,10 +153,6 @@ namespace ZhedSolver
                 nextGeneration.Add(new Node(down, parent, new ZhedStep(Operations.MoveDown, coords), heuristic(down)));
                 nextGeneration.Add(new Node(left, parent, new ZhedStep(Operations.MoveLeft, coords), heuristic(left)));
                 nextGeneration.Add(new Node(right, parent, new ZhedStep(Operations.MoveRight, coords), heuristic(right)));
-               // nextGeneration.Add(CreateNewNode(parent, coords, Operations.MoveUp, 1));
-               // nextGeneration.Add(CreateNewNode(parent, coords, Operations.MoveDown, 1));
-               // nextGeneration.Add(CreateNewNode(parent, coords, Operations.MoveLeft, 1));
-               // nextGeneration.Add(CreateNewNode(parent, coords, Operations.MoveRight, 1));
             }
             return nextGeneration;
         }
