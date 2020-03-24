@@ -186,5 +186,9 @@ namespace ZhedSolver
         public static Coords MoveRight(Coords coords) {
             return new Coords(coords.x + 1, coords.y);
         }
+
+        public bool AlignedWith(Coords coords) {
+            return this.x == coords.x || this.y == coords.y;
+        }
     };
 }

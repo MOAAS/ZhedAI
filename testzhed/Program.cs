@@ -42,9 +42,16 @@ namespace ZhedSolver
 
             while (!board.isOver) {
                 board.PrintBoard();
-                Console.Write("Select tile (X, Y): ");
-                string[] coordsInput = Console.ReadLine().Split();
-                int X, Y;
+                
+                Console.Write("Select tile (X, Y) / H for hint: ");
+                string input = Console.ReadLine();
+
+                if (input.ToLower() == "h") {
+                    ShowHint(board);
+                    continue;
+                }
+
+                string[] coordsInput = input.Split(); int X, Y;
                 if (coordsInput.Length != 2 || !int.TryParse(coordsInput[0], out X) || !int.TryParse(coordsInput[1], out Y)) {
                     Console.WriteLine("Invalid input");
                     continue;
@@ -65,6 +72,17 @@ namespace ZhedSolver
 
             Console.WriteLine("You win!");
             board.PrintBoard();
+        }
+
+        private static void ShowHint(ZhedBoard board) {
+            ZhedStep hint = new Solver(board).GetHint();
+            if (hint == null)
+                Console.WriteLine("We give up, this is too hard for us. Hmm but we believe in you :D\n");
+            else {
+                Console.Write("Perhaps... ");
+                hint.Print();
+                Console.WriteLine();
+            }            
         }
 
         private static void ShowZhedSteps(Solver solver, SearchMethod method) {

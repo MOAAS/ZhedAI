@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ZhedSolver
 {
@@ -25,9 +26,7 @@ namespace ZhedSolver
         }
 
         public List<ZhedStep> Solve(SearchMethod searchMethod) {
-            Func<ZhedBoard, int> heuristic = (ZhedBoard) => {
-                return 1;
-            };
+            Func<ZhedBoard, int> heuristic = Heuristic2;
 
 
             PriorityQueue<Node> queue = new PriorityQueue<Node>();
@@ -62,6 +61,26 @@ namespace ZhedSolver
                 case SearchMethod.Astar: return node.value + node.height;
                 default: return 1;
             }
+        }
+
+        public int Heuristic0(ZhedBoard board) {
+            return 1;
+        }
+
+        public int Heuristic2(ZhedBoard board) {
+            if (board.isOver)
+                return 0;
+            List<int[]> valueTiles = board.valueTiles;
+            List<int[]> finishTiles = board.finishTiles;
+
+            int numberOfTilesOnTheZhedBoardThatNotOnlyHaveANaturalNumberOnThemButAlsoHappenToBeAlignedThatIsOnTheSameRowOrColumnWithAFinishTile = 0;
+            foreach (int[] finishTile in finishTiles)
+                foreach (int[] valueTile in valueTiles)
+                    if (new Coords(valueTile[0], valueTile[1]).AlignedWith(new Coords(finishTile[0], finishTile[1])))
+                        numberOfTilesOnTheZhedBoardThatNotOnlyHaveANaturalNumberOnThemButAlsoHappenToBeAlignedThatIsOnTheSameRowOrColumnWithAFinishTile++;
+            if (numberOfTilesOnTheZhedBoardThatNotOnlyHaveANaturalNumberOnThemButAlsoHappenToBeAlignedThatIsOnTheSameRowOrColumnWithAFinishTile == 0)
+                return int.MaxValue;
+            return 1 / numberOfTilesOnTheZhedBoardThatNotOnlyHaveANaturalNumberOnThemButAlsoHappenToBeAlignedThatIsOnTheSameRowOrColumnWithAFinishTile;
         }
 
         /*
@@ -116,10 +135,14 @@ namespace ZhedSolver
             List<Coords> positiveTiles = parent.board.GetPositiveTiles();
 
             foreach (Coords coords in positiveTiles) {
-                nextGeneration.Add(new Node(parent.board.GoUp(coords), parent, new ZhedStep(Operations.MoveUp, coords), heuristic(parent.board)));
-                nextGeneration.Add(new Node(parent.board.GoDown(coords), parent, new ZhedStep(Operations.MoveDown, coords), heuristic(parent.board)));
-                nextGeneration.Add(new Node(parent.board.GoLeft(coords), parent, new ZhedStep(Operations.MoveLeft, coords), heuristic(parent.board)));
-                nextGeneration.Add(new Node(parent.board.GoRight(coords), parent, new ZhedStep(Operations.MoveRight, coords), heuristic(parent.board)));
+                ZhedBoard up = parent.board.GoUp(coords);
+                ZhedBoard down = parent.board.GoDown(coords);
+                ZhedBoard left = parent.board.GoLeft(coords);
+                ZhedBoard right = parent.board.GoRight(coords);
+                nextGeneration.Add(new Node(up, parent, new ZhedStep(Operations.MoveUp, coords), heuristic(up)));
+                nextGeneration.Add(new Node(down, parent, new ZhedStep(Operations.MoveDown, coords), heuristic(down)));
+                nextGeneration.Add(new Node(left, parent, new ZhedStep(Operations.MoveLeft, coords), heuristic(left)));
+                nextGeneration.Add(new Node(right, parent, new ZhedStep(Operations.MoveRight, coords), heuristic(right)));
                // nextGeneration.Add(CreateNewNode(parent, coords, Operations.MoveUp, 1));
                // nextGeneration.Add(CreateNewNode(parent, coords, Operations.MoveDown, 1));
                // nextGeneration.Add(CreateNewNode(parent, coords, Operations.MoveLeft, 1));
@@ -141,7 +164,6 @@ namespace ZhedSolver
         }
 
 /*
-        
         private List<ZhedStep> BFS(Node root) {
             Queue<Node> queue = new Queue<Node>();
             queue.Enqueue(root);
@@ -172,6 +194,13 @@ namespace ZhedSolver
 
         public ZhedBoard GetBoard() {
             return this.board;
+        }
+
+        public ZhedStep GetHint() {
+            var task = Task.Run(() => this.Solve(SearchMethod.Greedy)[0]);
+            if (task.Wait(TimeSpan.FromSeconds(1)))
+                return task.Result;
+            else return null;
         }
     }
 
