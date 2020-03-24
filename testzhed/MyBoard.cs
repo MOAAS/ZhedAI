@@ -13,6 +13,7 @@ namespace ZhedSolver
         private const int WINNER_TILE = -3;
 
         private int width, height;
+        private int boardValue = 0;
         private List<int[]> valueTiles = new List<int[]>{}; 
         private List<Coords> valueTilesCoords = new List<Coords>{}; 
         private List<int[]> finishTiles = new List<int[]>{}; 
@@ -35,6 +36,7 @@ namespace ZhedSolver
             this.height = zhedBoard.height;
             this.board = new List<List<int>>();
             this.valueTilesCoords = new List<Coords>(zhedBoard.valueTilesCoords);
+            this.boardValue = zhedBoard.boardValue;
 
             for(int i = 0; i < this.height; i ++) {
                 this.board.Add(new List<int>(zhedBoard.board[i]));
@@ -125,6 +127,7 @@ namespace ZhedSolver
             }
             ZhedBoard newBoard = new ZhedBoard(board);
             newBoard.SetTile(coords, USED_TILE);
+            newBoard.boardValue+=tileValue;
             newBoard.valueTilesCoords.RemoveAll(coord => coord.x == coords.x && coord.y == coords.y);
 
             while(tileValue>0){
@@ -167,6 +170,36 @@ namespace ZhedSolver
         }*/
         public List<Coords> GetValueTiles(){
             return valueTilesCoords;
+        }
+
+
+        private  int checkTileExtensionValue(Coords coords, Func<Coords, Coords> moveFunction) {
+            int tileValue = this.TileValue(coords);
+            int tileExtensionValue = 0;
+            while(tileValue>0){
+                tileExtensionValue++;
+                coords = moveFunction(coords);
+                if(!inbounds(coords))
+                    break;
+
+                switch (TileValue(coords)) {
+                    case EMPTY_TILE: tileValue--; break;
+                    case FINISH_TILE: tileValue--; break;
+                    default: break;
+                }
+            }
+        
+            return tileExtensionValue;
+        }
+
+        public int getBoardMaxValue(){
+            int totalValue = this.boardValue;
+            foreach (Coords coord in valueTilesCoords){
+                int submax1 = Math.Max(checkTileExtensionValue(coord,Coords.MoveUp),checkTileExtensionValue(coord,Coords.MoveDown));
+                int submax2 = Math.Max(checkTileExtensionValue(coord,Coords.MoveRight),checkTileExtensionValue(coord,Coords.MoveLeft));
+                totalValue+= Math.Max(submax1,submax2);
+            }
+            return totalValue;
         }
     }
 

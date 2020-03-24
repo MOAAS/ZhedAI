@@ -21,6 +21,8 @@ namespace ZhedSolver
             ZhedBoard board = new ZhedBoard("levels/level4.txt");
             Solver solver = new Solver(board);
 
+            
+
             Menu menu = new Menu();
             menu.ShowMenu();
             Options option;
@@ -42,6 +44,7 @@ namespace ZhedSolver
 
             while (!board.isOver) {
                 board.PrintBoard();
+                Console.WriteLine(board.getBoardMaxValue());
                 Console.Write("Select tile (X, Y): ");
                 string[] coordsInput = Console.ReadLine().Split();
                 int X, Y;

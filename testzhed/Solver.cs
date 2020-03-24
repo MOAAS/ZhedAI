@@ -170,6 +170,11 @@ namespace ZhedSolver
         }
         */
 
+        public int Heuristic3(ZhedBoard board){
+            if(board.isOver)
+                return 0;
+            return 1/board.getBoardMaxValue();
+        }
         public ZhedBoard GetBoard() {
             return this.board;
         }
