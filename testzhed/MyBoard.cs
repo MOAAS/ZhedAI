@@ -149,7 +149,7 @@ namespace ZhedSolver
             return coords.x >= 0 && coords.y >= 0 && coords.x < width && coords.y < height;
         }
 
-        private int TileValue(Coords coords) {
+        public int TileValue(Coords coords) {
             return this.board[coords.y][coords.x];
         }
 
@@ -168,18 +168,18 @@ namespace ZhedSolver
             }
             return result;
         }*/
-        public List<Coords> GetValueTiles(){
-            return valueTilesCoords;
-        }
 
         public List<int[]> GetFinishTiles() {
             return finishTiles;
         }
 
-        public List<int[]> GetValueTiles2() {
+        public List<int[]> GetValueTiles() {
             return valueTiles;
         }
 
+        public List<Coords> GetValueTilesCoords() {
+            return this.valueTilesCoords;
+        }
 
         private  int checkTileExtensionValue(Coords coords, Func<Coords, Coords> moveFunction) {
             int tileValue = this.TileValue(coords);

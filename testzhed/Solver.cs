@@ -26,8 +26,7 @@ namespace ZhedSolver
         }
 
         public List<ZhedStep> Solve(SearchMethod searchMethod) {
-            Func<ZhedBoard, int> heuristic = Heuristic3;
-
+            Func<ZhedBoard, int> heuristic = Heuristic1;
 
             PriorityQueue<Node> queue = new PriorityQueue<Node>();
             queue.Enqueue(new Node(this.board, null, null, 1), 1);
@@ -71,10 +70,58 @@ namespace ZhedSolver
             return 1;
         }
 
+        private int Heuristic1(ZhedBoard board) {
+            int minZhedDistance = int.MaxValue;
+
+            foreach (int[] valueTile in board.GetValueTiles()) {
+                foreach(int[] finishTile in board.GetFinishTiles()) {
+                    int zhedDistance;
+
+                    if (valueTile[0] == finishTile[0]) 
+                        zhedDistance = CalcZhedDistance(valueTile, finishTile, board, true);
+                    else if (valueTile[1] == finishTile[1])
+                        zhedDistance = CalcZhedDistance(valueTile, finishTile, board, false);
+                    else continue;
+
+                    if (zhedDistance < minZhedDistance) 
+                        minZhedDistance = zhedDistance;
+                }
+            }
+            return minZhedDistance;
+        }
+
+        private int CalcZhedDistance(int [] valueTile, int[] finishTile, ZhedBoard board, Boolean alignedVertically) {
+            int actualDistance = ((alignedVertically) ? Math.Abs(finishTile[1] - valueTile[1]) : Math.Abs(finishTile[0] - valueTile[0]));
+            return (actualDistance - valueTile[2] - GetNumUsedTiles(valueTile, finishTile, alignedVertically));
+        }
+
+        private int GetNumUsedTiles(int[] valueTile, int[] finishTile, Boolean alignedVertically) {
+            int numUsedTiles = 0;
+            
+            Func<Coords, Coords> moveFunction;
+            if (alignedVertically) {
+                if (valueTile[1] < finishTile[1]) moveFunction = Coords.MoveUp;
+                else moveFunction = Coords.MoveDown;
+            }
+            else { 
+                if (valueTile[0] < finishTile[0]) moveFunction = Coords.MoveRight;
+                else moveFunction = Coords.MoveLeft;
+            }
+
+            Coords coords = moveFunction(new Coords(valueTile[0], valueTile[1]));
+            int tileValue = board.TileValue(coords);
+            while (tileValue == -1) {
+                numUsedTiles++;
+                coords = moveFunction(coords);
+                tileValue = board.TileValue(coords);
+            }
+            return numUsedTiles;
+        }
+
         public int Heuristic2(ZhedBoard board) {
             if (board.isOver)
                 return 0;
-            List<int[]> valueTiles = board.GetValueTiles2();
+            List<int[]> valueTiles = board.GetValueTiles();
             List<int[]> finishTiles = board.GetFinishTiles();
 
             int numberOfTilesOnTheZhedBoardThatNotOnlyHaveANaturalNumberOnThemButAlsoHappenToBeAlignedThatIsOnTheSameRowOrColumnWithAFinishTile = 0;
@@ -143,7 +190,7 @@ namespace ZhedSolver
 
         private List<Node> GetNextGeneration(Node parent, Func<ZhedBoard, int> heuristic) {
             List<Node> nextGeneration = new List<Node>();
-            List<Coords> valueTiles = parent.board.GetValueTiles();
+            List<Coords> valueTiles = parent.board.GetValueTilesCoords();
 
             foreach (Coords coords in valueTiles) {
                 ZhedBoard up = parent.board.GoUp(coords);
@@ -157,7 +204,6 @@ namespace ZhedSolver
             }
             return nextGeneration;
         }
-
         
         private List<ZhedStep> GetPath(Node solutionNode) {
             List<ZhedStep> path = new List<ZhedStep>();
@@ -224,13 +270,12 @@ namespace ZhedSolver
             this.parent = parent;
             this.zhedStep = zhedStep;
             this.value = value;
-
             this.height = 0;
 
-/*             while(parent != null) {
+            while(parent != null) {
                 this.height += 1;
                 parent = parent.parent;
-            } */
+            } 
         }
     }
 
@@ -244,13 +289,7 @@ namespace ZhedSolver
         }
 
         public void Print() {
-            Console.Write("Coords[" + coords.x + ":" + coords.y + "] : ");
-            switch (operations) {
-                case Operations.MoveUp: Console.Write("Move Up\n"); break;
-                case Operations.MoveDown: Console.Write("Move Down\n"); break;
-                case Operations.MoveLeft: Console.Write("Move Left\n"); break;
-                case Operations.MoveRight: Console.Write("Move Right\n"); break;
-            }
+            Console.WriteLine("Coords({0}, {1}) : {2}.", coords.x, coords.y, operations);
         }
     }
 }
