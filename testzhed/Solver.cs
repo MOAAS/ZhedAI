@@ -38,8 +38,8 @@ namespace ZhedSolver
                 visitedNodes++;
                 Node nextNode = queue.Dequeue();
 
-                Console.WriteLine("Visit number {0}", visitedNodes); nextNode.board.PrintBoard();
-                Console.WriteLine("Value of board: {0}" , nextNode.board.getBoardMaxValue());
+              //  Console.WriteLine("Visit number {0}", visitedNodes); nextNode.board.PrintBoard();
+              //  Console.WriteLine("Value of board: {0}" , nextNode.board.getBoardMaxValue());
 
                 if (nextNode.board.isOver) {
                     Console.WriteLine("Visited {0} nodes", visitedNodes);
@@ -84,14 +84,15 @@ namespace ZhedSolver
                         numberOfTilesOnTheZhedBoardThatNotOnlyHaveANaturalNumberOnThemButAlsoHappenToBeAlignedThatIsOnTheSameRowOrColumnWithAFinishTile++;
             if (numberOfTilesOnTheZhedBoardThatNotOnlyHaveANaturalNumberOnThemButAlsoHappenToBeAlignedThatIsOnTheSameRowOrColumnWithAFinishTile == 0)
                 return int.MaxValue;
-            return 1 / numberOfTilesOnTheZhedBoardThatNotOnlyHaveANaturalNumberOnThemButAlsoHappenToBeAlignedThatIsOnTheSameRowOrColumnWithAFinishTile;
+            return 3 / numberOfTilesOnTheZhedBoardThatNotOnlyHaveANaturalNumberOnThemButAlsoHappenToBeAlignedThatIsOnTheSameRowOrColumnWithAFinishTile;
         }
 
         public int Heuristic3(ZhedBoard board){
             if(board.isOver)
                 return 0;
-            return 1 / board.getBoardMaxValue();
+            return 1000 / board.getBoardMaxValue();
         }
+
 
         /*
 

@@ -172,6 +172,14 @@ namespace ZhedSolver
             return valueTilesCoords;
         }
 
+        public List<int[]> GetFinishTiles() {
+            return finishTiles;
+        }
+
+        public List<int[]> GetValueTiles2() {
+            return valueTiles;
+        }
+
 
         private  int checkTileExtensionValue(Coords coords, Func<Coords, Coords> moveFunction) {
             int tileValue = this.TileValue(coords);
