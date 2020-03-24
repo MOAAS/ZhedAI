@@ -1,5 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System;
+using System.Diagnostics;
+using System.Threading;
 
 namespace ZhedSolver
 {
@@ -16,7 +18,7 @@ namespace ZhedSolver
                 new int[] {4, 0}
             };
 
-            ZhedBoard board = new ZhedBoard("levels/41.txt");
+            ZhedBoard board = new ZhedBoard("levels/testlevel.txt");
             Solver solver = new Solver(board);
 
             Menu menu = new Menu();
@@ -29,7 +31,8 @@ namespace ZhedSolver
 
             switch(option) {
                 case Options.Play: Play(board); break;
-                case Options.Solve: ShowZhedSteps(solver); break;
+                case Options.SolveDFS: ShowZhedSteps(solver, SearchMethod.DFS); break;
+                case Options.SolveBFS: ShowZhedSteps(solver, SearchMethod.BFS); break;
             }
         }
 
@@ -50,10 +53,10 @@ namespace ZhedSolver
                 Console.WriteLine();
 
                 switch(char.ToUpper(dirInput)) {
-                    case 'U': board.GoUp(new Coords(X, Y)); break;
-                    case 'D': board.GoDown(new Coords(X, Y)); break;
-                    case 'L': board.GoLeft(new Coords(X, Y)); break;
-                    case 'R': board.GoRight(new Coords(X, Y)); break;
+                    case 'U': board = board.GoUp(new Coords(X, Y)); break;
+                    case 'D': board = board.GoDown(new Coords(X, Y)); break;
+                    case 'L': board = board.GoLeft(new Coords(X, Y)); break;
+                    case 'R': board = board.GoRight(new Coords(X, Y)); break;
                     default: Console.WriteLine("Invalid direction."); break;
                 }
             }
@@ -62,8 +65,16 @@ namespace ZhedSolver
             board.PrintBoard();
         }
 
-        private static void ShowZhedSteps(Solver solver) {
-            List<ZhedStep> steps = solver.Solve(SearchMethod.BFS);
+        private static void ShowZhedSteps(Solver solver, SearchMethod method) {
+            solver.GetBoard().PrintBoard();
+
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+
+            List<ZhedStep> steps = solver.Solve(method);
+
+	        stopwatch.Stop();
+	        Console.WriteLine("{0} method: Elapsed Time is {1} ms\n", method, stopwatch.ElapsedMilliseconds);
 
             foreach (ZhedStep step in steps) 
                 step.Print(); 

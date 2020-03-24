@@ -4,7 +4,8 @@ namespace ZhedSolver
 {
     enum Options {
         Play,
-        Solve,
+        SolveDFS,
+        SolveBFS,
         Invalid
     }
 
@@ -13,7 +14,8 @@ namespace ZhedSolver
             Console.WriteLine("Zhed");
             Console.WriteLine("---------------------");
             Console.WriteLine("1 - Solve Puzzle");
-            Console.WriteLine("2 - Let AI solve it");
+            Console.WriteLine("2 - Let AI solve it (DFS)");
+            Console.WriteLine("3 - Let AI solve it (BFS)");
             Console.WriteLine("---------------------");
             Console.Write("Choose an option: ");
         }
@@ -23,7 +25,8 @@ namespace ZhedSolver
             Console.WriteLine();
             switch (char.ToUpper(dirInput)) {
                 case '1': return Options.Play;
-                case '2': return Options.Solve;
+                case '2': return Options.SolveDFS;
+                case '3': return Options.SolveBFS;
                 default: Console.WriteLine("Invalid option."); return Options.Invalid;
             }
         }

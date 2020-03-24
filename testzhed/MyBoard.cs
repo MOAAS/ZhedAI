@@ -96,41 +96,45 @@ namespace ZhedSolver
             Console.WriteLine();
         }
 
-        public void GoUp(Coords coords) {
-            SpreadTile(coords, Coords.MoveUp);
+        public ZhedBoard GoUp(Coords coords) {
+            return SpreadTile(this, coords, Coords.MoveUp);
         }
 
-        public void GoDown(Coords coords){
-            SpreadTile(coords, Coords.MoveDown);
+        public ZhedBoard GoDown(Coords coords){
+            return SpreadTile(this, coords, Coords.MoveDown);
         }
 
-        public void GoLeft(Coords coords){
-            SpreadTile(coords, Coords.MoveLeft);
+        public ZhedBoard GoLeft(Coords coords){
+            return SpreadTile(this, coords, Coords.MoveLeft);
         }
 
-        public void GoRight(Coords coords){
-            SpreadTile(coords, Coords.MoveRight);
+        public ZhedBoard GoRight(Coords coords){
+            return SpreadTile(this, coords, Coords.MoveRight);
         }
 
-        public void SpreadTile(Coords coords, Func<Coords, Coords> moveFunction){
-            int tileValue = TileValue(coords);
+        private static ZhedBoard SpreadTile(ZhedBoard board, Coords coords, Func<Coords, Coords> moveFunction) {
+            int tileValue = board.TileValue(coords);
             if(tileValue <= 0) {
                 Console.WriteLine("Woah gamer! Calm down your horses");
-                return;
+                return board;
             }
-            SetTile(coords, USED_TILE);
+
+            ZhedBoard newBoard = new ZhedBoard(board);
+            newBoard.SetTile(coords, USED_TILE);
 
             while(tileValue>0){
                 coords = moveFunction(coords);
-                if(!inbounds(coords))
+                if(!newBoard.inbounds(coords))
                     break;
 
-                switch (TileValue(coords)) {
-                    case EMPTY_TILE: SetTile(coords, USED_TILE); tileValue--; break;
-                    case FINISH_TILE: SetTile(coords, WINNER_TILE); this.isOver = true; break;
+                switch (newBoard.TileValue(coords)) {
+                    case EMPTY_TILE: newBoard.SetTile(coords, USED_TILE); tileValue--; break;
+                    case FINISH_TILE: newBoard.SetTile(coords, WINNER_TILE); newBoard.isOver = true; break;
                     default: break;
                 }
             }
+
+            return newBoard;
         }
 
         public bool inbounds(Coords coords){
