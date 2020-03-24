@@ -7,10 +7,10 @@ namespace ZhedSolver
 {
     public class ZhedBoard
     {               
-        private const int EMPTY_TILE = 0;
-        private const int USED_TILE = -1;
-        private const int FINISH_TILE = -2;
-        private const int WINNER_TILE = -3;
+        public const int EMPTY_TILE = 0;
+        public const int USED_TILE = -1;
+        public const int FINISH_TILE = -2;
+        public const int WINNER_TILE = -3;
 
         private int width, height;
         private int boardValue = 0;
@@ -36,6 +36,8 @@ namespace ZhedSolver
             this.height = zhedBoard.height;
             this.board = new List<List<int>>();
             this.valueTilesCoords = new List<Coords>(zhedBoard.valueTilesCoords);
+            this.valueTiles = new List<int[]>(zhedBoard.valueTiles);
+            this.finishTiles = new List<int[]>(zhedBoard.finishTiles);
             this.boardValue = zhedBoard.boardValue;
 
             for(int i = 0; i < this.height; i ++) {
@@ -127,8 +129,8 @@ namespace ZhedSolver
             }
             ZhedBoard newBoard = new ZhedBoard(board);
             newBoard.SetTile(coords, USED_TILE);
-            newBoard.boardValue+=tileValue;
-            newBoard.valueTilesCoords.RemoveAll(coord => coord.x == coords.x && coord.y == coords.y);
+            newBoard.boardValue += tileValue;
+            newBoard.UpdateValueTiles(coords);
 
             while(tileValue>0){
                 coords = moveFunction(coords);
@@ -143,6 +145,11 @@ namespace ZhedSolver
             }
         
             return newBoard;
+        }
+        
+        private void UpdateValueTiles(Coords coords) {
+            this.valueTiles.RemoveAll(tile => tile[0] == coords.x && tile[1] == coords.y);
+            this.valueTilesCoords.RemoveAll(coord => coord.x == coords.x && coord.y == coords.y);
         }
 
         public bool inbounds(Coords coords){
