@@ -14,7 +14,9 @@ namespace ZhedSolver
 
         private int width, height;
         private List<int[]> valueTiles = new List<int[]>{}; 
+        private List<Coords> valueTilesCoords = new List<Coords>{}; 
         private List<int[]> finishTiles = new List<int[]>{}; 
+
         
         private List<List<int>> board = new List<List<int>>{};
 
@@ -32,6 +34,7 @@ namespace ZhedSolver
             this.width = zhedBoard.width;
             this.height = zhedBoard.height;
             this.board = new List<List<int>>();
+            this.valueTilesCoords = new List<Coords>(zhedBoard.valueTilesCoords);
 
             for(int i = 0; i < this.height; i ++) {
                 this.board.Add(new List<int>(zhedBoard.board[i]));
@@ -49,8 +52,10 @@ namespace ZhedSolver
                 int x = int.Parse(nums[0]);
                 int y = int.Parse(nums[1]);
                 int value = int.Parse(nums[2]);
-                if (value > 0)
-                    valueTiles.Add(new int[]{x, y, value});        
+                if (value > 0){
+                    valueTiles.Add(new int[]{x, y, value});
+                    valueTilesCoords.Add(new Coords(x,y));
+                }        
                 else finishTiles.Add(new int[]{x, y});
             }
 
@@ -118,9 +123,9 @@ namespace ZhedSolver
                 Console.WriteLine("Woah gamer! Calm down your horses");
                 return board;
             }
-
             ZhedBoard newBoard = new ZhedBoard(board);
             newBoard.SetTile(coords, USED_TILE);
+            newBoard.valueTilesCoords.RemoveAll(coord => coord.x == coords.x && coord.y == coords.y);
 
             while(tileValue>0){
                 coords = moveFunction(coords);
@@ -133,7 +138,7 @@ namespace ZhedSolver
                     default: break;
                 }
             }
-
+        
             return newBoard;
         }
 
@@ -149,6 +154,7 @@ namespace ZhedSolver
             return this.board[coords.y][coords.x] = value;
         }
 
+        /*
         public List<Coords> GetPositiveTiles() {
             List<Coords> result = new List<Coords>();
             for(int y = 0; y < this.height; y++){
@@ -158,6 +164,9 @@ namespace ZhedSolver
                 }
             }
             return result;
+        }*/
+        public List<Coords> GetValueTiles(){
+            return valueTilesCoords;
         }
     }
 

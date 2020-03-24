@@ -113,9 +113,9 @@ namespace ZhedSolver
 
         private List<Node> GetNextGeneration(Node parent, Func<ZhedBoard, int> heuristic) {
             List<Node> nextGeneration = new List<Node>();
-            List<Coords> positiveTiles = parent.board.GetPositiveTiles();
+            List<Coords> valueTiles = parent.board.GetValueTiles();
 
-            foreach (Coords coords in positiveTiles) {
+            foreach (Coords coords in valueTiles) {
                 nextGeneration.Add(new Node(parent.board.GoUp(coords), parent, new ZhedStep(Operations.MoveUp, coords), heuristic(parent.board)));
                 nextGeneration.Add(new Node(parent.board.GoDown(coords), parent, new ZhedStep(Operations.MoveDown, coords), heuristic(parent.board)));
                 nextGeneration.Add(new Node(parent.board.GoLeft(coords), parent, new ZhedStep(Operations.MoveLeft, coords), heuristic(parent.board)));
