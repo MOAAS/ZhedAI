@@ -29,40 +29,72 @@ namespace ZhedSolver
                 return 1;
             };
 
-            LinkedList<Node> queue = new LinkedList<Node>();
 
-            queue.AddLast(new Node(this.board, null, null, 1));
+            PriorityQueue<Node> queue = new PriorityQueue<Node>();
+            queue.Enqueue(new Node(this.board, null, null, 1), 1);
 
+            DFSPriority = int.MaxValue;
+            int visitedNodes = 0;
             while(queue.Count > 0) {
-                            foreach (var item in queue)
-            {
-                Console.WriteLine(item.value);
-            }
-                Node nextNode = NextToExpand(queue, searchMethod);
-                if (nextNode.board.isOver)
+                visitedNodes++;
+                Node nextNode = queue.Dequeue();
+                if (nextNode.board.isOver) {
+                    Console.WriteLine("Visited {0} nodes", visitedNodes);
                     return GetPath(nextNode);
+                }
                 List<Node> children = GetNextGeneration(nextNode, heuristic);
                 foreach(Node node in children)
-                    queue.AddLast(node);
+                    queue.Enqueue(node, NodePriority(searchMethod, node));
             }
             return null;
 
            // return BFS(root);
         }
 
-        public Node NextToExpand(LinkedList<Node> queue, SearchMethod method) {
-            Node node;
+        private int DFSPriority;
+
+        public int NodePriority(SearchMethod method, Node node) {
+            DFSPriority--;
             switch (method) {
-                case SearchMethod.BFS: node = queue.First.Value; queue.RemoveFirst(); break;
-                case SearchMethod.DFS: node = queue.Last.Value; queue.RemoveLast(); break;
-                case SearchMethod.Greedy: return null;
+                case SearchMethod.BFS: return node.height;
+                case SearchMethod.DFS: return DFSPriority; 
+                case SearchMethod.Greedy: return node.value;
+                case SearchMethod.Astar: return node.value + node.height;
+                default: return 1;
+            }
+        }
 
+        /*
 
-                default: return null;
-
+        public Node NextToExpand(PriorityQueue<Node> queue, SearchMethod method) {
+            return queue.Dequeue();
+            Node node = null;
+            int bestValue = int.MaxValue;
+            switch (method) {
+                case SearchMethod.BFS: return queue.Dequeue(); break;
+               // case SearchMethod.DFS: node = queue.Last.Value; queue.RemoveLast(); break;
+               // case SearchMethod.Greedy: 
+                    foreach (Node item in queue) {
+                        if (item.value < bestValue) {
+                            node = item;
+                            bestValue = item.value;
+                        }
+                    }
+                  //  queue.Remove(node);
+                  //  return node;
+                case SearchMethod.Astar: 
+                    foreach (Node item in queue) {
+                        if (item.value + item.height < bestValue) {
+                            node = item;
+                            bestValue = item.value + item.height;
+                        }
+                    }
+                    queue.Remove(node);
+                    return node;
             }
             return node;
         }
+            */
 
 
 /*
@@ -124,7 +156,7 @@ namespace ZhedSolver
             return null;
         }
         */
-
+/*
         private List<ZhedStep> DFS() {
             return new List<ZhedStep>();
         }
@@ -136,6 +168,7 @@ namespace ZhedSolver
         private List<ZhedStep> Astar() {
             return new List<ZhedStep>();
         }
+        */
 
         public ZhedBoard GetBoard() {
             return this.board;

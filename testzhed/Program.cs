@@ -18,7 +18,7 @@ namespace ZhedSolver
                 new int[] {4, 0}
             };
 
-            ZhedBoard board = new ZhedBoard("levels/testlevel.txt");
+            ZhedBoard board = new ZhedBoard("levels/level4.txt");
             Solver solver = new Solver(board);
 
             Menu menu = new Menu();
@@ -33,6 +33,8 @@ namespace ZhedSolver
                 case Options.Play: Play(board); break;
                 case Options.SolveDFS: ShowZhedSteps(solver, SearchMethod.DFS); break;
                 case Options.SolveBFS: ShowZhedSteps(solver, SearchMethod.BFS); break;
+                case Options.SolveGreedy: ShowZhedSteps(solver, SearchMethod.Greedy); break;
+                case Options.SolveAstar: ShowZhedSteps(solver, SearchMethod.Astar); break;
             }
         }
 
