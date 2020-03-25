@@ -49,8 +49,6 @@ namespace ZhedSolver
                     queue.Enqueue(node, NodePriority(searchMethod, node));
             }
             return null;
-
-           // return BFS(root);
         }
 
         private int DFSPriority;
@@ -83,6 +81,8 @@ namespace ZhedSolver
                         zhedDistance = CalcZhedDistance(valueTile, finishTile, board, false);
                     else continue;
 
+                    //Console.WriteLine("Min zhed distance calculated: {0}", zhedDistance);
+
                     if (zhedDistance < minZhedDistance) 
                         minZhedDistance = zhedDistance;
                 }
@@ -100,7 +100,7 @@ namespace ZhedSolver
             
             Func<Coords, Coords> moveFunction;
             if (alignedVertically) {
-                if (valueTile[1] < finishTile[1]) moveFunction = Coords.MoveUp;
+                if (valueTile[1] > finishTile[1]) moveFunction = Coords.MoveUp;
                 else moveFunction = Coords.MoveDown;
             }
             else { 
@@ -110,11 +110,20 @@ namespace ZhedSolver
 
             Coords coords = moveFunction(new Coords(valueTile[0], valueTile[1]));
             int tileValue = board.TileValue(coords);
-            while (tileValue == -1) {
-                numUsedTiles++;
+            while (tileValue != ZhedBoard.FINISH_TILE) {
+
+                if (tileValue == ZhedBoard.USED_TILE) {
+                    numUsedTiles++; 
+                    Console.WriteLine("Num used tiles: {0}", numUsedTiles);
+                }
+
                 coords = moveFunction(coords);
                 tileValue = board.TileValue(coords);
             }
+
+            if (numUsedTiles != 0) 
+                Console.WriteLine("Num used tiles: {0}", numUsedTiles);
+
             return numUsedTiles;
         }
 
