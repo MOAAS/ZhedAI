@@ -32,6 +32,8 @@ namespace ZhedSolver
         }
 
         public ZhedBoard(ZhedBoard zhedBoard) {
+            Globals.stopwatch3.Start();
+            Globals.counter++;
             this.width = zhedBoard.width;
             this.height = zhedBoard.height;
             this.board = new List<List<int>>();
@@ -43,6 +45,7 @@ namespace ZhedSolver
             for(int i = 0; i < this.height; i ++) {
                 this.board.Add(new List<int>(zhedBoard.board[i]));
             }
+            Globals.stopwatch3.Stop();
         }
 
         public ZhedBoard(String file) {
@@ -128,17 +131,17 @@ namespace ZhedSolver
                 return board;
             }
             ZhedBoard newBoard = new ZhedBoard(board);
-            newBoard.SetTile(coords, USED_TILE);
-            newBoard.boardValue += tileValue;
-            newBoard.UpdateValueTiles(coords);
 
+            newBoard.SetTile(coords, USED_TILE);
+            newBoard.boardValue += 2*tileValue;
+            newBoard.UpdateValueTiles(coords);
             while(tileValue>0){
                 coords = moveFunction(coords);
                 if(!newBoard.inbounds(coords))
                     break;
 
                 switch (newBoard.TileValue(coords)) {
-                    case EMPTY_TILE: newBoard.SetTile(coords, USED_TILE); tileValue--; break;
+                    case EMPTY_TILE: newBoard.SetTile(coords, USED_TILE);  tileValue--; break;
                     case FINISH_TILE: newBoard.SetTile(coords, WINNER_TILE); newBoard.isOver = true; break;
                     default: break;
                 }
@@ -188,32 +191,34 @@ namespace ZhedSolver
             return this.valueTilesCoords;
         }
 
-        private  int checkTileExtensionValue(Coords coords, Func<Coords, Coords> moveFunction) {
+        private int checkTileExtensionValue(Coords coords, Func<Coords, Coords> moveFunction) {
             int tileValue = this.TileValue(coords);
             int tileExtensionValue = 0;
             while(tileValue>0){
-                tileExtensionValue++;
+                tileExtensionValue+=2;
                 coords = moveFunction(coords);
                 if(!inbounds(coords))
                     break;
-
-                switch (TileValue(coords)) {
-                    case EMPTY_TILE: tileValue--; break;
-                    case FINISH_TILE: tileValue--; break;
-                    default: break;
-                }
+                
+                int val = TileValue(coords);
+                if(val == EMPTY_TILE || val == FINISH_TILE)
+                    tileValue--;
+                else if(val > 0)
+                    tileExtensionValue--;
             }
         
             return tileExtensionValue;
         }
 
         public int getBoardMaxValue(){
+            Globals.stopwatch2.Start();
             int totalValue = this.boardValue;
             foreach (Coords coord in valueTilesCoords){
                 int submax1 = Math.Max(checkTileExtensionValue(coord,Coords.MoveUp),checkTileExtensionValue(coord,Coords.MoveDown));
                 int submax2 = Math.Max(checkTileExtensionValue(coord,Coords.MoveRight),checkTileExtensionValue(coord,Coords.MoveLeft));
                 totalValue+= Math.Max(submax1,submax2);
             }
+            Globals.stopwatch2.Stop();
             return totalValue;
         }
     }

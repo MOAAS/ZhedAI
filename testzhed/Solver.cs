@@ -26,7 +26,7 @@ namespace ZhedSolver
         }
 
         public List<ZhedStep> Solve(SearchMethod searchMethod) {
-            Func<ZhedBoard, int> heuristic = Heuristic1;
+            Func<ZhedBoard, int> heuristic = Heuristic3;
 
             PriorityQueue<Node> queue = new PriorityQueue<Node>();
             queue.Enqueue(new Node(this.board, null, null, 1), 1);
@@ -146,7 +146,7 @@ namespace ZhedSolver
         public int Heuristic3(ZhedBoard board){
             if(board.isOver)
                 return 0;
-            return 1000 / board.getBoardMaxValue();
+            return  1000 / board.getBoardMaxValue();
         }
 
 

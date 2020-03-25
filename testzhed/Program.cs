@@ -18,7 +18,7 @@ namespace ZhedSolver
                 new int[] {4, 0}
             };
 
-            ZhedBoard board = new ZhedBoard("levels/level15.txt");
+            ZhedBoard board = new ZhedBoard("levels/level12.txt");
             Solver solver = new Solver(board);
 
             Menu menu = new Menu();
@@ -95,11 +95,22 @@ namespace ZhedSolver
 
 	        stopwatch.Stop();
 	        Console.WriteLine("{0} method: Elapsed Time is {1} ms\n", method, stopwatch.ElapsedMilliseconds);
+            Console.WriteLine("{0} method: Elapsed Time in funcao de avaliacao {1} ms\n", method, Globals.stopwatch2.ElapsedMilliseconds);
+             Console.WriteLine("{0} method: Elapsed Time in enqueue {1} ms\n", method, Globals.stopwatch3.ElapsedMilliseconds);
+              Console.WriteLine(Globals.counter);
 
             foreach (ZhedStep step in steps) 
                 step.Print(); 
         }
     } 
-
-    
+ 
 }
+
+    static class Globals{
+
+    public static int counter = 0;
+    public static Stopwatch stopwatch2 = new Stopwatch();
+    public static Stopwatch stopwatch3 = new Stopwatch();
+    public static Stopwatch stopwatch4 = new Stopwatch();
+}
+   
