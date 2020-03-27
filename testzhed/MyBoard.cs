@@ -127,9 +127,9 @@ namespace ZhedSolver
         private static ZhedBoard SpreadTile(ZhedBoard board, Coords coords, Func<Coords, Coords> moveFunction) {
             int tileValue = board.TileValue(coords);
             if(tileValue <= 0) {
-                Console.WriteLine("Woah gamer! Calm down your horses");
                 return board;
             }
+
             ZhedBoard newBoard = new ZhedBoard(board);
 
             newBoard.SetTile(coords, USED_TILE);
@@ -166,18 +166,6 @@ namespace ZhedSolver
         private int SetTile(Coords coords, int value) {
             return this.board[coords.y][coords.x] = value;
         }
-
-        /*
-        public List<Coords> GetPositiveTiles() {
-            List<Coords> result = new List<Coords>();
-            for(int y = 0; y < this.height; y++){
-                for(int x = 0; x < this.width; x++){
-                    if(this.board[y][x] > 0)
-                        result.Add(new Coords(x, y));
-                }
-            }
-            return result;
-        }*/
 
         public List<int[]> GetFinishTiles() {
             return finishTiles;

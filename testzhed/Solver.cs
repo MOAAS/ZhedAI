@@ -133,14 +133,14 @@ namespace ZhedSolver
             List<int[]> valueTiles = board.GetValueTiles();
             List<int[]> finishTiles = board.GetFinishTiles();
 
-            int numberOfTilesOnTheZhedBoardThatNotOnlyHaveANaturalNumberOnThemButAlsoHappenToBeAlignedThatIsOnTheSameRowOrColumnWithAFinishTile = 0;
+            int numAligned = 0;
             foreach (int[] finishTile in finishTiles)
                 foreach (int[] valueTile in valueTiles)
                     if (new Coords(valueTile[0], valueTile[1]).AlignedWith(new Coords(finishTile[0], finishTile[1])))
-                        numberOfTilesOnTheZhedBoardThatNotOnlyHaveANaturalNumberOnThemButAlsoHappenToBeAlignedThatIsOnTheSameRowOrColumnWithAFinishTile++;
-            if (numberOfTilesOnTheZhedBoardThatNotOnlyHaveANaturalNumberOnThemButAlsoHappenToBeAlignedThatIsOnTheSameRowOrColumnWithAFinishTile == 0)
+                        numAligned++;
+            if (numAligned == 0)
                 return int.MaxValue;
-            return 3 / numberOfTilesOnTheZhedBoardThatNotOnlyHaveANaturalNumberOnThemButAlsoHappenToBeAlignedThatIsOnTheSameRowOrColumnWithAFinishTile;
+            return 1 / numAligned;
         }
 
         public int Heuristic3(ZhedBoard board){
@@ -148,54 +148,6 @@ namespace ZhedSolver
                 return 0;
             return  1000 / board.getBoardMaxValue();
         }
-
-
-        /*
-
-        public Node NextToExpand(PriorityQueue<Node> queue, SearchMethod method) {
-            return queue.Dequeue();
-            Node node = null;
-            int bestValue = int.MaxValue;
-            switch (method) {
-                case SearchMethod.BFS: return queue.Dequeue(); break;
-               // case SearchMethod.DFS: node = queue.Last.Value; queue.RemoveLast(); break;
-               // case SearchMethod.Greedy: 
-                    foreach (Node item in queue) {
-                        if (item.value < bestValue) {
-                            node = item;
-                            bestValue = item.value;
-                        }
-                    }
-                  //  queue.Remove(node);
-                  //  return node;
-                case SearchMethod.Astar: 
-                    foreach (Node item in queue) {
-                        if (item.value + item.height < bestValue) {
-                            node = item;
-                            bestValue = item.value + item.height;
-                        }
-                    }
-                    queue.Remove(node);
-                    return node;
-            }
-            return node;
-        }
-            */
-
-
-/*
-        private Node CreateNewNode(Node parent, Coords coords, Operations operations, int value) {
-            ZhedBoard boardCopy = new ZhedBoard(parent.board);
-
-            switch (operations) {
-                case Operations.MoveUp: boardCopy.GoUp(coords); break;
-                case Operations.MoveDown: boardCopy.GoDown(coords); break;
-                case Operations.MoveLeft: boardCopy.GoLeft(coords); break;
-                case Operations.MoveRight: boardCopy.GoRight(coords); break;
-            }
-            return new Node(boardCopy, parent, new ZhedStep(operations, coords), value);
-        }
-        */ 
 
         private List<Node> GetNextGeneration(Node parent, Func<ZhedBoard, int> heuristic) {
             List<Node> nextGeneration = new List<Node>();
@@ -224,35 +176,6 @@ namespace ZhedSolver
             path.Reverse();
             return path;
         }
-
-/*
-        private List<ZhedStep> BFS(Node root) {
-            Queue<Node> queue = new Queue<Node>();
-            queue.Enqueue(root);
-            while(queue.Count > 0) {
-                Node nextNode = queue.Dequeue();
-                if (nextNode.board.isOver)
-                    return GetPath(nextNode);
-                List<Node> children = GetNextGeneration(nextNode);
-                foreach(Node node in children)
-                    queue.Enqueue(node);
-            }
-            return null;
-        }
-        */
-/*
-        private List<ZhedStep> DFS() {
-            return new List<ZhedStep>();
-        }
-
-        private List<ZhedStep> Greedy() {
-            return new List<ZhedStep>();
-        }
-
-        private List<ZhedStep> Astar() {
-            return new List<ZhedStep>();
-        }
-        */
 
         public ZhedBoard GetBoard() {
             return this.board;
