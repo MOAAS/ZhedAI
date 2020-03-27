@@ -209,6 +209,15 @@ namespace ZhedSolver
             Globals.stopwatch2.Stop();
             return totalValue;
         }
+        public float getBoardTotalMaxValue(){
+            Globals.stopwatch2.Start();
+            float totalValue = this.boardValue;
+            foreach (Coords coord in valueTilesCoords){
+                totalValue+= (checkTileExtensionValue(coord,Coords.MoveUp)+checkTileExtensionValue(coord,Coords.MoveDown)+checkTileExtensionValue(coord,Coords.MoveRight)+checkTileExtensionValue(coord,Coords.MoveLeft))/4;
+            }
+            Globals.stopwatch2.Stop();
+            return  totalValue;
+        }
     }
 
 

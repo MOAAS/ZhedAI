@@ -26,7 +26,7 @@ namespace ZhedSolver
         }
 
         public List<ZhedStep> Solve(SearchMethod searchMethod) {
-            Func<ZhedBoard, int> heuristic = Heuristic3;
+            Func<ZhedBoard, int> heuristic = Heuristic5;
 
             PriorityQueue<Node> queue = new PriorityQueue<Node>();
             queue.Enqueue(new Node(this.board, null, null, 1), 1);
@@ -139,14 +139,34 @@ namespace ZhedSolver
                     if (new Coords(valueTile[0], valueTile[1]).AlignedWith(new Coords(finishTile[0], finishTile[1])))
                         numAligned++;
             if (numAligned == 0)
-                return int.MaxValue;
-            return 1 / numAligned;
+                return 9999;
+            int a = 1 / numAligned;
+            //Console.WriteLine(a);
+            return a;
         }
 
         public int Heuristic3(ZhedBoard board){
             if(board.isOver)
                 return 0;
-            return  1000 / board.getBoardMaxValue();
+            int a = 1000 / board.getBoardMaxValue();
+            //Console.WriteLine(a);
+            return a;
+        }
+
+
+        public int Heuristic4(ZhedBoard board){
+            if(board.isOver)
+                return 0;
+            int a = (int)(1000 / board.getBoardTotalMaxValue());
+            //Console.WriteLine(a);
+            return a;
+        }
+
+        public int Heuristic5(ZhedBoard board){
+            int a = Heuristic2(board);
+            int b = Heuristic4(board);
+            //Console.WriteLine(a + " " + b);
+            return a+b;
         }
 
         private List<Node> GetNextGeneration(Node parent, Func<ZhedBoard, int> heuristic) {
