@@ -1,0 +1,11 @@
+c:\Users\win7\Desktop\IART\testzhed\obj\Debug\netcoreapp2.1\testzhed.csprojAssemblyReference.cache
+c:\Users\win7\Desktop\IART\testzhed\obj\Debug\netcoreapp2.1\testzhed.csproj.CoreCompileInputs.cache
+c:\Users\win7\Desktop\IART\testzhed\obj\Debug\netcoreapp2.1\testzhed.AssemblyInfoInputs.cache
+c:\Users\win7\Desktop\IART\testzhed\obj\Debug\netcoreapp2.1\testzhed.AssemblyInfo.cs
+c:\Users\win7\Desktop\IART\testzhed\bin\Debug\netcoreapp2.1\testzhed.deps.json
+c:\Users\win7\Desktop\IART\testzhed\bin\Debug\netcoreapp2.1\testzhed.runtimeconfig.json
+c:\Users\win7\Desktop\IART\testzhed\bin\Debug\netcoreapp2.1\testzhed.runtimeconfig.dev.json
+c:\Users\win7\Desktop\IART\testzhed\bin\Debug\netcoreapp2.1\testzhed.dll
+c:\Users\win7\Desktop\IART\testzhed\bin\Debug\netcoreapp2.1\testzhed.pdb
+c:\Users\win7\Desktop\IART\testzhed\obj\Debug\netcoreapp2.1\testzhed.dll
+c:\Users\win7\Desktop\IART\testzhed\obj\Debug\netcoreapp2.1\testzhed.pdb
