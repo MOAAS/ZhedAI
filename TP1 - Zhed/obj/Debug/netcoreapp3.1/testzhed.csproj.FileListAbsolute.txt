@@ -11,3 +11,16 @@ C:\Users\win7\Desktop\IART\testzhed\obj\Debug\netcoreapp3.1\testzhed.AssemblyInf
 C:\Users\win7\Desktop\IART\testzhed\obj\Debug\netcoreapp3.1\testzhed.dll
 C:\Users\win7\Desktop\IART\testzhed\obj\Debug\netcoreapp3.1\testzhed.pdb
 c:\Users\win7\Desktop\IART\testzhed\obj\Debug\netcoreapp3.1\testzhed.genruntimeconfig.cache
+C:\Users\win7\Desktop\IART\TP1 - Zhed\bin\Debug\netcoreapp3.1\testzhed.exe
+C:\Users\win7\Desktop\IART\TP1 - Zhed\bin\Debug\netcoreapp3.1\testzhed.deps.json
+C:\Users\win7\Desktop\IART\TP1 - Zhed\bin\Debug\netcoreapp3.1\testzhed.runtimeconfig.json
+C:\Users\win7\Desktop\IART\TP1 - Zhed\bin\Debug\netcoreapp3.1\testzhed.runtimeconfig.dev.json
+C:\Users\win7\Desktop\IART\TP1 - Zhed\bin\Debug\netcoreapp3.1\testzhed.dll
+C:\Users\win7\Desktop\IART\TP1 - Zhed\bin\Debug\netcoreapp3.1\testzhed.pdb
+C:\Users\win7\Desktop\IART\TP1 - Zhed\obj\Debug\netcoreapp3.1\testzhed.csprojAssemblyReference.cache
+C:\Users\win7\Desktop\IART\TP1 - Zhed\obj\Debug\netcoreapp3.1\testzhed.csproj.CoreCompileInputs.cache
+C:\Users\win7\Desktop\IART\TP1 - Zhed\obj\Debug\netcoreapp3.1\testzhed.AssemblyInfoInputs.cache
+C:\Users\win7\Desktop\IART\TP1 - Zhed\obj\Debug\netcoreapp3.1\testzhed.AssemblyInfo.cs
+C:\Users\win7\Desktop\IART\TP1 - Zhed\obj\Debug\netcoreapp3.1\testzhed.dll
+C:\Users\win7\Desktop\IART\TP1 - Zhed\obj\Debug\netcoreapp3.1\testzhed.pdb
+C:\Users\win7\Desktop\IART\TP1 - Zhed\obj\Debug\netcoreapp3.1\testzhed.genruntimeconfig.cache

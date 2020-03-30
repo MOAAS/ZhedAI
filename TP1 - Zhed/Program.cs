@@ -9,16 +9,7 @@ namespace ZhedSolver
     {
         static void Main(string[] args)
         {   
-            List<int[]> valueTiles =  new List<int[]> {
-                new int[] { 2, 2, 1},
-                new int[] { 1, 3, 2},
-                new int[] { 0, 0, 3}
-            };
-            List<int[]> finishTiles =  new List<int[]> {
-                new int[] {4, 0}
-            };
-
-            ZhedBoard board = new ZhedBoard("levels/level12.txt");
+            ZhedBoard board = new ZhedBoard("levels/level10.txt");
             Solver solver = new Solver(board);
 
             Menu menu = new Menu();
@@ -35,6 +26,7 @@ namespace ZhedSolver
                 case Options.SolveBFS: ShowZhedSteps(solver, SearchMethod.BFS); break;
                 case Options.SolveGreedy: ShowZhedSteps(solver, SearchMethod.Greedy); break;
                 case Options.SolveAstar: ShowZhedSteps(solver, SearchMethod.Astar); break;
+                case Options.SolveUniform: ShowZhedSteps(solver, SearchMethod.Uniform); break;
             }
         }
 
@@ -95,22 +87,11 @@ namespace ZhedSolver
 
 	        stopwatch.Stop();
 	        Console.WriteLine("{0} method: Elapsed Time is {1} ms\n", method, stopwatch.ElapsedMilliseconds);
-            Console.WriteLine("{0} method: Elapsed Time in funcao de avaliacao {1} ms\n", method, Globals.stopwatch2.ElapsedMilliseconds);
-             Console.WriteLine("{0} method: Elapsed Time in enqueue {1} ms\n", method, Globals.stopwatch3.ElapsedMilliseconds);
-              Console.WriteLine(Globals.counter);
-
+            Console.WriteLine("Steps:");
             foreach (ZhedStep step in steps) 
                 step.Print(); 
         }
     } 
  
-}
-
-    static class Globals{
-
-    public static int counter = 0;
-    public static Stopwatch stopwatch2 = new Stopwatch();
-    public static Stopwatch stopwatch3 = new Stopwatch();
-    public static Stopwatch stopwatch4 = new Stopwatch();
 }
    
