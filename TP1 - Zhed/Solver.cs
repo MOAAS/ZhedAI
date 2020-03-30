@@ -31,11 +31,7 @@ namespace ZhedSolver
             Solves a zhed puzzle with a provided Search method.
             Returns a list of steps, which contain coordinates and operators.
         */
-        public List<ZhedStep> Solve(SearchMethod searchMethod) {
-            Func<ZhedBoard, int> heuristic = Heuristic5;
-            if (searchMethod != SearchMethod.Greedy && searchMethod != SearchMethod.Astar)
-                heuristic = Heuristic0;
-
+        public List<ZhedStep> Solve(SearchMethod searchMethod, Func<ZhedBoard, int> heuristic) {
             PriorityQueue<Node> queue = new PriorityQueue<Node>();
             Node root = new Node(this.board, null, null, 1, 0);
             queue.Enqueue(root, NodePriority(searchMethod, root));
@@ -78,7 +74,7 @@ namespace ZhedSolver
         }
 
         // No heuristic
-        public int Heuristic0(ZhedBoard board) {
+        public static int Heuristic0(ZhedBoard board) {
             return 1;
         }
 
@@ -86,7 +82,7 @@ namespace ZhedSolver
         /* Heuristic 1
             Minimum zhed Distance between a value tile and a finish tile.
         */
-        private int Heuristic1(ZhedBoard board) {
+        public static int Heuristic1(ZhedBoard board) {
             int minZhedDistance = int.MaxValue;
 
             foreach (int[] valueTile in board.GetValueTiles()) {
@@ -109,15 +105,15 @@ namespace ZhedSolver
         /* Heuristic 1 auxiliary
             Calculates Zhed distance between value tile and finish tile
         */
-        private int CalcZhedDistance(int [] valueTile, int[] finishTile, ZhedBoard board, Boolean alignedVertically) {
+        private static int CalcZhedDistance(int [] valueTile, int[] finishTile, ZhedBoard board, Boolean alignedVertically) {
             int actualDistance = ((alignedVertically) ? Math.Abs(finishTile[1] - valueTile[1]) : Math.Abs(finishTile[0] - valueTile[0]));
-            return (actualDistance - valueTile[2] - GetNumUsedTiles(valueTile, finishTile, alignedVertically));
+            return (actualDistance - valueTile[2] - GetNumUsedTiles(valueTile, finishTile, board, alignedVertically));
         }
 
         /* Heuristic 1 auxiliary
             Calculates number of used tiles between a value tile and finish tile
         */
-        private int GetNumUsedTiles(int[] valueTile, int[] finishTile, Boolean alignedVertically) {
+        private static int GetNumUsedTiles(int[] valueTile, int[] finishTile, ZhedBoard board, Boolean alignedVertically) {
             int numUsedTiles = 0;
             
             Func<Coords, Coords> moveFunction;
@@ -136,15 +132,15 @@ namespace ZhedSolver
 
                 if (tileValue == ZhedBoard.USED_TILE) {
                     numUsedTiles++; 
-                    Console.WriteLine("Num used tiles: {0}", numUsedTiles);
+                   // Console.WriteLine("Num used tiles: {0}", numUsedTiles);
                 }
 
                 coords = moveFunction(coords);
                 tileValue = board.TileValue(coords);
             }
 
-            if (numUsedTiles != 0) 
-                Console.WriteLine("Num used tiles: {0}", numUsedTiles);
+           // if (numUsedTiles != 0) 
+                //Console.WriteLine("Num used tiles: {0}", numUsedTiles);
 
             return numUsedTiles;
         }
@@ -152,7 +148,7 @@ namespace ZhedSolver
         /* Heuristic 2
             1 / Number of cells aligned with finish tile
         */
-        public int Heuristic2(ZhedBoard board) {
+        public static int Heuristic2(ZhedBoard board) {
             if (board.isOver)
                 return 0;
             List<int[]> valueTiles = board.GetValueTiles();
@@ -173,7 +169,7 @@ namespace ZhedSolver
         /* Heuristic 3
             1 / Sum of the number of tiles that can be covered with the current layout
         */
-        public int Heuristic3(ZhedBoard board){
+        public static int Heuristic3(ZhedBoard board){
             if(board.isOver)
                 return 0;
             return 1000 / board.getBoardMaxValue();
@@ -182,7 +178,7 @@ namespace ZhedSolver
         /* Heuristic 4
             Similar to heuristic 3, but takes into account the average in all 4 directions on each tile
         */
-        public int Heuristic4(ZhedBoard board){
+        public static int Heuristic4(ZhedBoard board){
             if(board.isOver)
                 return 0;
             return (int)(1000 / board.getBoardTotalMaxValue());
@@ -191,7 +187,7 @@ namespace ZhedSolver
         /* Heuristic 5
             Combines heuristic 3 and 4
         */
-        public int Heuristic5(ZhedBoard board){
+        public static int Heuristic5(ZhedBoard board){
             return Heuristic2(board) + Heuristic4(board);
         }
 
@@ -250,7 +246,7 @@ namespace ZhedSolver
         */        
 
         public ZhedStep GetHint() {
-            var task = Task.Run(() => this.Solve(SearchMethod.Greedy)[0]);
+            var task = Task.Run(() => Solve(SearchMethod.Greedy, Heuristic5)[0]);
             if (task.Wait(TimeSpan.FromSeconds(3)))
                 return task.Result;
             else return null;

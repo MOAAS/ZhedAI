@@ -94,11 +94,11 @@ namespace ZhedSolver
         /* Prints the board on the console.
         */
         public void PrintBoard() {
-            Console.Write("  |");
+            Console.Write("   |");
             for(int j = 0; j < width; j++) {
                 Console.Write("  " + j);
             }
-            Console.Write("\n--+");
+            Console.Write("\n---+");
             for(int j = 0; j < width; j++) {
                 Console.Write("---");
             }
