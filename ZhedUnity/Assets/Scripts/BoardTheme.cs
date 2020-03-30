@@ -4,22 +4,31 @@ using UnityEngine;
 
 public class BoardTheme : MonoBehaviour
 {
-    public static Color primaryColor = new Color(0.478f, 0.425f, 0.876f);
+    public static Color primaryColor;
+    public static Color idleColor;
+    public static Color selectedColor;
 
-
-    public static Color idleColor = new Color(0.5f, 0.4f, 0.5f);
-    public static Color selectedColor = new Color(0.3f, 0.2f, 0.3f);
+    public GameObject colorPicker;
 
     // Start is called before the first frame update
     void Start()
     {
-        GetComponent<Renderer>().material.color = EndarkenColor(primaryColor, 1.2f);        
     }
 
     // Update is called once per frame
     void Update()
     {
+        primaryColor = colorPicker.GetComponent<FlexibleColorPicker>().color;
+        idleColor = EndarkenColor(primaryColor, 1.25f);
+        selectedColor = EndarkenColor(primaryColor, 2.25f);
+
+        UpdateBoardColor();
+
         
+    }
+
+    private void UpdateBoardColor() {
+        GetComponent<Renderer>().material.color = EndarkenColor(primaryColor, 2f); 
     }
 
     public static Color EndarkenColor(Color color, float divisor) {
