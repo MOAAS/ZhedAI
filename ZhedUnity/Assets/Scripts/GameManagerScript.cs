@@ -48,6 +48,8 @@ public class GameManagerScript : MonoBehaviour
     }
 
     public void Hint() {
+        if (this.zhedBoard.GetValueTiles().Count == 0)
+            return;
         Solver solver = new Solver(this.zhedBoard);
         ZhedStep step = solver.GetHint();
         if (step == null)
@@ -187,6 +189,9 @@ public class GameManagerScript : MonoBehaviour
 
 
     private void Play(TileController tile, Func<Coords, Coords> moveFunction) {  
+        if (gameOver)
+            return;
+
         Destroy(tile.gameObject);        
         StartCoroutine(MakeUsedTile(tile.coords, 0));
 

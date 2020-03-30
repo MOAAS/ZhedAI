@@ -9,32 +9,28 @@ namespace ZhedSolver
     {
         static void Main(string[] args)
         {   
-            List<int[]> valueTiles =  new List<int[]> {
-                new int[] { 2, 2, 1},
-                new int[] { 1, 3, 2},
-                new int[] { 0, 0, 3}
-            };
-            List<int[]> finishTiles =  new List<int[]> {
-                new int[] {4, 0}
-            };
-
-            ZhedBoard board = new ZhedBoard("levels/level08.txt");
+            ZhedBoard board = new ZhedBoard(Menu.LevelPickerMenu());
             Solver solver = new Solver(board);
 
-            Menu menu = new Menu();
-            menu.ShowMenu();
-            Options option;
+            Menu.ShowMenu();            
+            switch(Menu.GetOption()) {
+                case SearchOption.Human: Play(board); break;
+                case SearchOption.SolveDFS: ShowZhedSteps(solver, SearchMethod.DFS, Solver.Heuristic0); break;
+                case SearchOption.SolveBFS: ShowZhedSteps(solver, SearchMethod.BFS, Solver.Heuristic0); break;
+                case SearchOption.SolveGreedy: ShowZhedSteps(solver, SearchMethod.Greedy, GetHeuristic()); break;
+                case SearchOption.SolveAstar: ShowZhedSteps(solver, SearchMethod.Astar, GetHeuristic()); break;
+                case SearchOption.SolveUniform: ShowZhedSteps(solver, SearchMethod.Uniform, Solver.Heuristic0); break;
+            }
+        }
 
-            do {
-                option = menu.GetOption();
-            } while(option == Options.Invalid);
-
-            switch(option) {
-                case Options.Play: Play(board); break;
-                case Options.SolveDFS: ShowZhedSteps(solver, SearchMethod.DFS); break;
-                case Options.SolveBFS: ShowZhedSteps(solver, SearchMethod.BFS); break;
-                case Options.SolveGreedy: ShowZhedSteps(solver, SearchMethod.Greedy); break;
-                case Options.SolveAstar: ShowZhedSteps(solver, SearchMethod.Astar); break;
+        private static Func<ZhedBoard, int> GetHeuristic() {
+            switch (Menu.HeuristicMenu()) {
+                case 1: return Solver.Heuristic1;
+                case 2: return Solver.Heuristic2;
+                case 3: return Solver.Heuristic3;
+                case 4: return Solver.Heuristic4;
+                case 5: return Solver.Heuristic5;
+                default: Console.WriteLine("Invalid heuristic!"); return Solver.Heuristic0;
             }
         }
 
@@ -77,7 +73,7 @@ namespace ZhedSolver
         private static void ShowHint(ZhedBoard board) {
             ZhedStep hint = new Solver(board).GetHint();
             if (hint == null)
-                Console.WriteLine("We give up, this is too hard for us. Hmm but we believe in you :D\n");
+                Console.WriteLine("We couldn't solve this...\n");
             else {
                 Console.Write("Perhaps... ");
                 hint.Print();
@@ -85,32 +81,21 @@ namespace ZhedSolver
             }            
         }
 
-        private static void ShowZhedSteps(Solver solver, SearchMethod method) {
+        private static void ShowZhedSteps(Solver solver, SearchMethod method, Func<ZhedBoard, int> heuristic) {
             solver.GetBoard().PrintBoard();
 
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
 
-            List<ZhedStep> steps = solver.Solve(method);
+            List<ZhedStep> steps = solver.Solve(method, heuristic);
 
 	        stopwatch.Stop();
 	        Console.WriteLine("{0} method: Elapsed Time is {1} ms\n", method, stopwatch.ElapsedMilliseconds);
-            Console.WriteLine("{0} method: Elapsed Time in funcao de avaliacao {1} ms\n", method, Globals.stopwatch2.ElapsedMilliseconds);
-             Console.WriteLine("{0} method: Elapsed Time in enqueue {1} ms\n", method, Globals.stopwatch3.ElapsedMilliseconds);
-              Console.WriteLine(Globals.counter);
-
+            Console.WriteLine("Steps:");
             foreach (ZhedStep step in steps) 
                 step.Print(); 
         }
     } 
  
-}
-
-    static class Globals{
-
-    public static int counter = 0;
-    public static Stopwatch stopwatch2 = new Stopwatch();
-    public static Stopwatch stopwatch3 = new Stopwatch();
-    public static Stopwatch stopwatch4 = new Stopwatch();
 }
    

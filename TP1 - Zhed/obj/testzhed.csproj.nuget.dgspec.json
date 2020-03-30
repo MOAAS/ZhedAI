@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\win7\\Desktop\\IART\\testzhed\\testzhed.csproj": {}
+    "C:\\Users\\win7\\Desktop\\IART\\TP1 - Zhed\\testzhed.csproj": {}
   },
   "projects": {
-    "C:\\Users\\win7\\Desktop\\IART\\testzhed\\testzhed.csproj": {
+    "C:\\Users\\win7\\Desktop\\IART\\TP1 - Zhed\\testzhed.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\win7\\Desktop\\IART\\testzhed\\testzhed.csproj",
+        "projectUniqueName": "C:\\Users\\win7\\Desktop\\IART\\TP1 - Zhed\\testzhed.csproj",
         "projectName": "testzhed",
-        "projectPath": "C:\\Users\\win7\\Desktop\\IART\\testzhed\\testzhed.csproj",
+        "projectPath": "C:\\Users\\win7\\Desktop\\IART\\TP1 - Zhed\\testzhed.csproj",
         "packagesPath": "C:\\Users\\win7\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\win7\\Desktop\\IART\\testzhed\\obj\\",
+        "outputPath": "C:\\Users\\win7\\Desktop\\IART\\TP1 - Zhed\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
