@@ -46,6 +46,7 @@ namespace ZhedSolver
                     Console.WriteLine("Visited {0} nodes", visitedNodes);
                     return GetPath(nextNode);
                 }
+
                 List<Node> children = GetNextGeneration(nextNode, heuristic);
                 foreach(Node node in children)
                     queue.Enqueue(node, NodePriority(searchMethod, node));
