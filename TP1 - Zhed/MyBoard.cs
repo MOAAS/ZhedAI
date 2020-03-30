@@ -261,11 +261,7 @@ namespace ZhedSolver
             }
             return totalValue;
         }
-
-        /* Same as above, but calculates the average in every direction, for each tile
-            Is used for heuristic 4 of the solver.
-        */
-        public float getBoardTotalMaxValue(){
+        public float getBoardTotalValue(){
             float totalValue = this.boardValue;
             foreach (Coords coord in valueTilesCoords){
                 totalValue += (

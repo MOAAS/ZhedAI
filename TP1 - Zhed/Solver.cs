@@ -181,7 +181,7 @@ namespace ZhedSolver
         public static int Heuristic4(ZhedBoard board){
             if(board.isOver)
                 return 0;
-            return (int)(1000 / board.getBoardTotalMaxValue());
+            return (int)(1000 / board.getBoardTotalValue());
         }
 
         /* Heuristic 5
