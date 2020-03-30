@@ -44,6 +44,7 @@ namespace ZhedSolver
                     Console.WriteLine("Visited {0} nodes", visitedNodes);
                     return GetPath(nextNode);
                 }
+              // nextNode.board.PrintBoard();
                 List<Node> children = GetNextGeneration(nextNode, heuristic);
                 foreach(Node node in children)
                     queue.Enqueue(node, NodePriority(searchMethod, node));
@@ -157,16 +158,13 @@ namespace ZhedSolver
         public int Heuristic4(ZhedBoard board){
             if(board.isOver)
                 return 0;
-            int a = (int)(1000 / board.getBoardTotalMaxValue());
+            int a = (int)(1000 / board.getBoardTotalValue());
             //Console.WriteLine(a);
             return a;
         }
 
         public int Heuristic5(ZhedBoard board){
-            int a = Heuristic2(board);
-            int b = Heuristic4(board);
-            //Console.WriteLine(a + " " + b);
-            return a+b;
+            return Heuristic2(board)+Heuristic4(board);
         }
 
         private List<Node> GetNextGeneration(Node parent, Func<ZhedBoard, int> heuristic) {

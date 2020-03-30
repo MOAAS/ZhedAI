@@ -18,7 +18,7 @@ namespace ZhedSolver
                 new int[] {4, 0}
             };
 
-            ZhedBoard board = new ZhedBoard("levels/level12.txt");
+            ZhedBoard board = new ZhedBoard("levels/level08.txt");
             Solver solver = new Solver(board);
 
             Menu menu = new Menu();

@@ -209,7 +209,7 @@ namespace ZhedSolver
             Globals.stopwatch2.Stop();
             return totalValue;
         }
-        public float getBoardTotalMaxValue(){
+        public float getBoardTotalValue(){
             Globals.stopwatch2.Start();
             float totalValue = this.boardValue;
             foreach (Coords coord in valueTilesCoords){
