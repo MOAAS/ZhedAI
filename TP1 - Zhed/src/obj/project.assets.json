@@ -14,11 +14,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\win7\\Desktop\\IART\\TP1 - Zhed\\testzhed.csproj",
+      "projectUniqueName": "C:\\Users\\win7\\Desktop\\IART\\TP1 - Zhed\\src\\testzhed.csproj",
       "projectName": "testzhed",
-      "projectPath": "C:\\Users\\win7\\Desktop\\IART\\TP1 - Zhed\\testzhed.csproj",
+      "projectPath": "C:\\Users\\win7\\Desktop\\IART\\TP1 - Zhed\\src\\testzhed.csproj",
       "packagesPath": "C:\\Users\\win7\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\win7\\Desktop\\IART\\TP1 - Zhed\\obj\\",
+      "outputPath": "C:\\Users\\win7\\Desktop\\IART\\TP1 - Zhed\\src\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

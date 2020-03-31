@@ -96,7 +96,9 @@ namespace ZhedSolver
         public void PrintBoard() {
             Console.Write("   |");
             for(int j = 0; j < width; j++) {
-                Console.Write("  " + j);
+                if (j < 10)
+                    Console.Write(" ");
+                Console.Write(" " + j);
             }
             Console.Write("\n---+");
             for(int j = 0; j < width; j++) {
