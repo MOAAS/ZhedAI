@@ -9,7 +9,15 @@ namespace ZhedSolver
     {
         static void Main(string[] args)
         {   
-            ZhedBoard board = new ZhedBoard(Menu.LevelPickerMenu());
+            ZhedBoard board = null;
+            try {
+                board = new ZhedBoard(Menu.LevelPickerMenu());
+            }
+            catch {
+                Console.WriteLine("Invalid board file!");
+                return;
+            }
+
             Solver solver = new Solver(board);
 
             Menu.ShowMenu();            
