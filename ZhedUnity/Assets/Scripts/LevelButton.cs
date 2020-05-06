@@ -19,7 +19,7 @@ public class LevelButton : MonoBehaviour
 
         if (levelNo != 0) {
             button.onClick.AddListener(delegate { 
-                GameObject.Find("GameManager").GetComponent<GameManagerScript>().LoadLevel("Levels/level" + levelNo + ".txt");
+                GameObject.Find("GamerManager").GetComponent<GamerManagerScript>().LoadLevel("Levels/level" + levelNo + ".txt");
             });
             name = "Load Level " + levelNo;        
             buttonText.text = "Level " + levelNo;

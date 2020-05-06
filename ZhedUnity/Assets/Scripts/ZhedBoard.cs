@@ -81,6 +81,8 @@ namespace ZhedSolver
                 this.board[tile[1]][tile[0]] = FINISH_TILE;
         }
 
+
+
         public void PrintBoard() {
             Console.Write("  |");
             for(int j = 0; j < width; j++) {
@@ -174,6 +176,18 @@ namespace ZhedSolver
 
         public List<Coords> GetValueTilesCoords() {
             return this.valueTilesCoords;
+        }
+
+        public List<List<int>> GetBoard() {
+            return this.board;
+        }
+
+        public bool Winner() {
+            return this.isOver;
+        }
+
+        public bool Loser() {
+            return !Winner() && this.valueTiles.Count == 0;
         }
 
         private int checkTileExtensionValue(Coords coords, Func<Coords, Coords> moveFunction) {

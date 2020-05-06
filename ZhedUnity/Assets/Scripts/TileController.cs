@@ -22,7 +22,7 @@ public class TileController : MonoBehaviour
     {
         this.animator = GetComponent<Animator>();
         this.tileText = transform.Find("Tile Text").GetComponent<TextMeshPro>();
-        this.gameManager = GameObject.Find("GameManager").GetComponent<GameManagerScript>();
+        this.gameManager = GetComponentInParent<GameManagerScript>();
 
         this.updateColor();
     }

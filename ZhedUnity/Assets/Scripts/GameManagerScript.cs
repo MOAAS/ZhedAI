@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.SceneManagement;
 
 using UnityEngine;
 
@@ -18,18 +17,18 @@ public class GameManagerScript : MonoBehaviour
     public GameObject finishTilePrefab;
 
     // UI
-    public GameObject titleScreen;
-    public GameObject gameScreen;
     public GameObject youWin;
     public GameObject youLose;
 
     private GameObject board;
-    private ZhedBoard zhedBoard;
+    public ZhedBoard zhedBoard;
+    public ZhedBoard initialZhedBoard;
 
     private TileController selectedTile;
     private float selectTime;
 
     private bool gameOver;
+    private String boardPath;
 
 
     private const float SPAWN_DELAY_SECS = 0.1f;
@@ -43,9 +42,7 @@ public class GameManagerScript : MonoBehaviour
     void Start() {
     }
 
-    public void RestartGame() {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }
+
 
     public void Hint() {
         if (this.zhedBoard.GetValueTiles().Count == 0)
@@ -80,22 +77,21 @@ public class GameManagerScript : MonoBehaviour
         }
     }
 
-    public void LoadLevel(String path) {
-        // Update UI
-        gameOver = false;
-        titleScreen.SetActive(false);
-        gameScreen.SetActive(true);
-        if (board != null)
-            Destroy(board);        
+    public void ResetLevel() {
+        if (this.initialZhedBoard == null)
+            return;
+        this.zhedBoard = this.initialZhedBoard;
 
+        if (this.board != null) 
+            Destroy(this.board);  
 
-        // Load file
-        valueTiles = new Dictionary<String, GameObject>();
-        finishTiles = new Dictionary<String, GameObject>();
-
-        zhedBoard = new ZhedBoard(path);
         board = new GameObject("Board");
+        board.transform.parent = this.gameObject.transform;
 
+
+        this.gameOver = false;
+        this.valueTiles = new Dictionary<String, GameObject>();
+        this.finishTiles = new Dictionary<String, GameObject>();
 
         for (int y = 0; y < zhedBoard.height; y++) {
             for (int x = 0; x < zhedBoard.width; x++) {
@@ -115,12 +111,17 @@ public class GameManagerScript : MonoBehaviour
             finishTiles.Add(coords.x + ":" + coords.y, MakeTile(coords, finishTilePrefab, Color.white));
         }
 
-        // Update Camera
-        GameObject.Find("Main Camera").transform.position = new Vector3(0, zhedBoard.height, -zhedBoard.height / 5.0f);
     }
 
+    public void LoadLevel(String path) {
+        this.initialZhedBoard = new ZhedBoard(path);
+        ResetLevel();
+        // Update Camera
+        GameObject.Find("Main Camera").transform.position = new Vector3(0, zhedBoard.height, -zhedBoard.height / 5.0f);
+     }
+
     Vector3 TilePos(Coords coords) {
-        return new Vector3(coords.x + 0.5f - zhedBoard.width / 2.0f, 0, zhedBoard.height / 2.0f - coords.y - 0.5f);
+        return new Vector3(coords.x + 0.5f - zhedBoard.width / 2.0f, 0, zhedBoard.height / 2.0f - coords.y - 0.5f) + transform.position;
     }
 
     GameObject MakeTile(Coords coords, GameObject prefab, Color color) {
@@ -188,7 +189,7 @@ public class GameManagerScript : MonoBehaviour
     }
 
 
-    private void Play(TileController tile, Func<Coords, Coords> moveFunction) {  
+    public void Play(TileController tile, Func<Coords, Coords> moveFunction) {  
         if (gameOver)
             return;
 
@@ -210,15 +211,24 @@ public class GameManagerScript : MonoBehaviour
         this.zhedBoard = ZhedBoard.SpreadTile(this.zhedBoard, tile.coords, moveFunction);
 
 
-        if (this.zhedBoard.isOver) {
+        if (this.Winner()) {
             youWin.SetActive(true);
             gameOver = true;
         }
-        else if (this.zhedBoard.GetValueTiles().Count == 0) {
+        else if (this.Loser()) {
             youLose.SetActive(true);
             gameOver = true;
         }
     }
+
+    public bool Winner() {
+        return this.zhedBoard.Winner();
+    }
+
+    public bool Loser() {
+        return this.zhedBoard.Loser();
+    }
+    
 
     private IEnumerator MakeUsedTile(Coords coords, float delay) {
         yield return new WaitForSeconds(delay);
