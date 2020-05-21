@@ -29,9 +29,19 @@ public class GamerManagerScript : MonoBehaviour
         titleScreen.SetActive(false);
         gameScreen.SetActive(true);
 
-        foreach (GameObject obj in GameObject.FindGameObjectsWithTag("GameManager")) {
+        foreach (GameObject obj in GetGameManagers()) {
             obj.GetComponent<GameManagerScript>().LoadLevel(path);
         }
 
+    }
+
+    public void ToggleGraphics() {
+        foreach (GameObject obj in GetGameManagers()) {
+            obj.GetComponent<GameManagerScript>().ToggleCoolGraphics();
+        }
+    }
+
+    private GameObject[] GetGameManagers() {
+        return GameObject.FindGameObjectsWithTag("GameManager");
     }
 }

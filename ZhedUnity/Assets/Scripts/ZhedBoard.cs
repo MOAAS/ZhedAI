@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;  
 using System.Linq;
+using System.Text;
 
 namespace ZhedSolver
 {
@@ -81,8 +82,6 @@ namespace ZhedSolver
                 this.board[tile[1]][tile[0]] = FINISH_TILE;
         }
 
-
-
         public void PrintBoard() {
             Console.Write("  |");
             for(int j = 0; j < width; j++) {
@@ -105,6 +104,23 @@ namespace ZhedSolver
                 Console.WriteLine();
             }
             Console.WriteLine();
+        }
+
+
+        public override String ToString() {
+            StringBuilder builder = new StringBuilder();
+
+            for(int i = 0; i < height; i++){
+                for(int j = 0; j < width; j++){
+                    if (board[i][j] >= 0)
+                        builder.Append(" ");
+                    builder.Append(board[i][j] + "");
+                }
+                builder.AppendLine();
+            }
+            builder.AppendLine();
+
+            return builder.ToString();
         }
 
         public ZhedBoard GoUp(Coords coords) {
@@ -149,6 +165,22 @@ namespace ZhedSolver
             return newBoard;
         }
         
+        public List<Coords> GetSpreadInDir(Coords coords, Func<Coords, Coords> moveFunction) {
+            int tileValue = this.TileValue(coords);
+            List<Coords> coordList = new List<Coords>();
+            for (int i = 0; i < tileValue; i++) {
+                coords = moveFunction(coords);
+                if(!this.inbounds(coords))
+                    break;
+                switch (this.TileValue(coords)) {
+                    case ZhedBoard.EMPTY_TILE: coordList.Add(coords); break;
+                    case ZhedBoard.FINISH_TILE: coordList.Add(coords); break;
+                    default: i--; break;
+                }
+            }
+            return coordList;
+        }
+
         private void UpdateValueTiles(Coords coords) {
             this.valueTiles.RemoveAll(tile => tile[0] == coords.x && tile[1] == coords.y);
             this.valueTilesCoords.RemoveAll(coord => coord.x == coords.x && coord.y == coords.y);
@@ -225,36 +257,8 @@ namespace ZhedSolver
             }
             return  totalValue;
         }
+
+        
     }
 
-
-    public class Coords {
-        public int x { get; set; }
-        public int y { get; set; }
-
-        public Coords(int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
-
-        public static Coords MoveUp(Coords coords) {
-            return new Coords(coords.x, coords.y - 1);
-        }
-
-        public static Coords MoveDown(Coords coords) {
-            return new Coords(coords.x, coords.y + 1);
-        }
-
-        public static Coords MoveLeft(Coords coords) {
-            return new Coords(coords.x - 1, coords.y);
-        }
-        
-        public static Coords MoveRight(Coords coords) {
-            return new Coords(coords.x + 1, coords.y);
-        }
-
-        public bool AlignedWith(Coords coords) {
-            return this.x == coords.x || this.y == coords.y;
-        }
-    };
 }

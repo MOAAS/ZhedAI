@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-using ZhedSolver;
 
 public class TileController : MonoBehaviour
 {
@@ -23,7 +22,7 @@ public class TileController : MonoBehaviour
         this.animator = GetComponent<Animator>();
         this.tileText = transform.Find("Tile Text").GetComponent<TextMeshPro>();
         this.gameManager = GetComponentInParent<GameManagerScript>();
-
+        
         this.updateColor();
     }
 
@@ -36,6 +35,10 @@ public class TileController : MonoBehaviour
 
     public void SetTileInfo(Coords coords, int value) {
         this.coords = coords;
+        this.tileValue = value;
+    }
+
+    public void SetTileValue(int value) {
         this.tileValue = value;
     }
 
@@ -52,7 +55,7 @@ public class TileController : MonoBehaviour
     }
 
     void OnMouseDown() {
-        this.gameManager.OnPieceSelected(this);
-        //GameObject.Find("GameManager").GetComponent<GameManagerScript>().Play(this, Coords.MoveLeft);
+        if (tileValue > 0)
+            this.gameManager.OnPieceSelected(this);
     }
 }

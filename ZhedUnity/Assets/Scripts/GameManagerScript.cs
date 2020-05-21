@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 
 using UnityEngine;
 
@@ -10,36 +11,47 @@ using System.Threading.Tasks;
 public class GameManagerScript : MonoBehaviour
 {
 
+    // Prefabs
     public GameObject floatingPreviewPrefab;
     public GameObject emptyTilePrefab;
     public GameObject valueTilePrefab;
     public GameObject usedTilePrefab;
     public GameObject finishTilePrefab;
-
+ 
     // UI
     public GameObject youWin;
     public GameObject youLose;
-
-    private GameObject board;
+    
+    // Boards
+    private String boardPath;
     public ZhedBoard zhedBoard;
     public ZhedBoard initialZhedBoard;
 
+    // Child objects
+    private GameObject board;
+    private Dictionary<Coords, GameObject> finishTiles;
+    private Dictionary<Coords, GameObject> valueTiles;
+    private TextMeshPro boardText;
+
+
+    // Interaction
     private TileController selectedTile;
     private float selectTime;
+    private bool coolGraphics;
 
+    // State
     private bool gameOver;
-    private String boardPath;
 
 
     private const float SPAWN_DELAY_SECS = 0.1f;
     private const float SOLVER_DELAY_SECS = 0.8f;
 
 
-    private Dictionary<String, GameObject> finishTiles;
-    private Dictionary<String, GameObject> valueTiles;
 
     // Start is called before the first frame update
     void Start() {
+        this.boardText = this.gameObject.transform.Find("Board Text").GetComponent<TextMeshPro>();
+        this.coolGraphics = false;
     }
 
 
@@ -67,14 +79,20 @@ public class GameManagerScript : MonoBehaviour
     
     private IEnumerator PlayZhedStep(ZhedStep step, float delay) {
         yield return new WaitForSeconds(delay);
-        TileController tile = this.valueTiles[step.coords.x + ":" + step.coords.y].GetComponent<TileController>();
+        TileController tile = this.valueTiles[step.coords].GetComponent<TileController>();
+        
 
         switch(step.operations) {
-            case Operations.MoveUp: Play(tile, Coords.MoveUp); break;
-            case Operations.MoveDown: Play(tile, Coords.MoveDown); break;
-            case Operations.MoveLeft: Play(tile, Coords.MoveLeft); break;
-            case Operations.MoveRight: Play(tile, Coords.MoveRight); break;
+            case Operations.MoveUp: Play(tile.coords, Coords.MoveUp); break;
+            case Operations.MoveDown: Play(tile.coords, Coords.MoveDown); break;
+            case Operations.MoveLeft: Play(tile.coords, Coords.MoveLeft); break;
+            case Operations.MoveRight: Play(tile.coords, Coords.MoveRight); break;
         }
+    }
+
+    public void ToggleCoolGraphics() {
+        this.coolGraphics = !coolGraphics;
+        ResetLevel();
     }
 
     public void ResetLevel() {
@@ -82,33 +100,37 @@ public class GameManagerScript : MonoBehaviour
             return;
         this.zhedBoard = this.initialZhedBoard;
 
-        if (this.board != null) 
-            Destroy(this.board);  
+        if (transform.Find("Board") != null) {
+            Destroy(transform.Find("Board").gameObject);
+        }
 
-        board = new GameObject("Board");
-        board.transform.parent = this.gameObject.transform;
+        this.board = new GameObject("Board");
+        this.board.transform.parent = this.gameObject.transform;
 
 
         this.gameOver = false;
-        this.valueTiles = new Dictionary<String, GameObject>();
-        this.finishTiles = new Dictionary<String, GameObject>();
+        this.valueTiles = new Dictionary<Coords, GameObject>();
+        this.finishTiles = new Dictionary<Coords, GameObject>();
 
         for (int y = 0; y < zhedBoard.height; y++) {
             for (int x = 0; x < zhedBoard.width; x++) {
                 MakeTile(new Coords(x, y), emptyTilePrefab, Color.white);
             }
         }        
+      
 
-        foreach (int[] tile in zhedBoard.GetValueTiles()) {
-            Coords coords = new Coords(tile[0], tile[1]);
-            GameObject valueTileObject = MakeTile(coords, valueTilePrefab, BoardTheme.idleColor);
-            valueTileObject.GetComponent<TileController>().SetTileInfo(coords, tile[2]);
-            valueTiles.Add(coords.x + ":" + coords.y, valueTileObject);
-        }
+        if (this.coolGraphics) {
+            foreach (int[] tile in zhedBoard.GetValueTiles()) {
+                Coords coords = new Coords(tile[0], tile[1]);
+                GameObject valueTileObject = MakeTile(coords, valueTilePrefab, BoardTheme.idleColor);
+                valueTileObject.GetComponent<TileController>().SetTileInfo(coords, tile[2]);
+                this.valueTiles.Add(coords, valueTileObject);
+            }
 
-        foreach (int[] tile in zhedBoard.GetFinishTiles()) {
-            Coords coords = new Coords(tile[0], tile[1]);
-            finishTiles.Add(coords.x + ":" + coords.y, MakeTile(coords, finishTilePrefab, Color.white));
+            foreach (int[] tile in zhedBoard.GetFinishTiles()) {
+                Coords coords = new Coords(tile[0], tile[1]);
+                this.finishTiles.Add(coords, MakeTile(coords, finishTilePrefab, Color.white));
+            }
         }
 
     }
@@ -118,7 +140,7 @@ public class GameManagerScript : MonoBehaviour
         ResetLevel();
         // Update Camera
         GameObject.Find("Main Camera").transform.position = new Vector3(0, zhedBoard.height, -zhedBoard.height / 5.0f);
-     }
+    }
 
     Vector3 TilePos(Coords coords) {
         return new Vector3(coords.x + 0.5f - zhedBoard.width / 2.0f, 0, zhedBoard.height / 2.0f - coords.y - 0.5f) + transform.position;
@@ -130,9 +152,20 @@ public class GameManagerScript : MonoBehaviour
         return gameObject;
     }
 
+
     // Update is called once per frame
     void Update()
     {
+        if (zhedBoard == null) {
+            boardText.text = "";
+            return;
+        }
+
+        if (!this.coolGraphics) {
+            boardText.text = this.zhedBoard.ToString();
+        }    
+        else boardText.text = "";
+
         if (this.selectedTile == null || Time.time < this.selectTime + 0.1f)
             return;
 
@@ -145,13 +178,15 @@ public class GameManagerScript : MonoBehaviour
             float angle = Vector2.Angle(diffVec, Vector2.right);
             angle = Mathf.Sign(Vector3.Cross(diffVec, Vector2.right).z) > 0 ? (360 - angle) % 360 : angle;
 
+            this.selectedTile.Select(false);
+
             if (angle < 45 || angle >= 315)
-                this.Play(this.selectedTile, Coords.MoveRight);
+                this.Play(this.selectedTile.coords, Coords.MoveRight);
             else if (angle < 135)
-                this.Play(this.selectedTile, Coords.MoveUp);
+                this.Play(this.selectedTile.coords, Coords.MoveUp);
             else if (angle < 225)
-                this.Play(this.selectedTile, Coords.MoveLeft);
-            else this.Play(this.selectedTile, Coords.MoveDown);
+                this.Play(this.selectedTile.coords, Coords.MoveLeft);
+            else this.Play(this.selectedTile.coords, Coords.MoveDown);
 
             DestroyFloatingPreviews();
         }
@@ -177,10 +212,10 @@ public class GameManagerScript : MonoBehaviour
             this.selectTime = Time.time;
             this.selectedTile.Select(true);
 
-            List<Coords> coordsUp = GetSpreadInDir(tile.coords, Coords.MoveUp);
-            List<Coords> coordsDown = GetSpreadInDir(tile.coords, Coords.MoveDown);
-            List<Coords> coordsLeft = GetSpreadInDir(tile.coords, Coords.MoveLeft);
-            List<Coords> coordsRight = GetSpreadInDir(tile.coords, Coords.MoveRight);
+            List<Coords> coordsUp = this.zhedBoard.GetSpreadInDir(tile.coords, Coords.MoveUp);
+            List<Coords> coordsDown = this.zhedBoard.GetSpreadInDir(tile.coords, Coords.MoveDown);
+            List<Coords> coordsLeft = this.zhedBoard.GetSpreadInDir(tile.coords, Coords.MoveLeft);
+            List<Coords> coordsRight = this.zhedBoard.GetSpreadInDir(tile.coords, Coords.MoveRight);
             for (int i = 0; i < coordsUp.Count; i++) StartCoroutine(MakePreviewTile(coordsUp[i], i * SPAWN_DELAY_SECS));
             for (int i = 0; i < coordsDown.Count; i++) StartCoroutine(MakePreviewTile(coordsDown[i], i * SPAWN_DELAY_SECS));
             for (int i = 0; i < coordsLeft.Count; i++) StartCoroutine(MakePreviewTile(coordsLeft[i], i * SPAWN_DELAY_SECS));
@@ -189,26 +224,30 @@ public class GameManagerScript : MonoBehaviour
     }
 
 
-    public void Play(TileController tile, Func<Coords, Coords> moveFunction) {  
+    public void Play(Coords coords, Func<Coords, Coords> moveFunction) {  
         if (gameOver)
             return;
 
-        Destroy(tile.gameObject);        
-        StartCoroutine(MakeUsedTile(tile.coords, 0));
 
-        Coords coords = tile.coords;
-        for (int tileValue = tile.tileValue, numUsedTiles = 1; tileValue > 0; tileValue--, numUsedTiles++) {
-            coords = moveFunction(coords);
-            if(!zhedBoard.inbounds(coords))
-                break;
-            switch (zhedBoard.TileValue(coords)) {
-                case ZhedBoard.EMPTY_TILE: StartCoroutine(MakeUsedTile(coords, numUsedTiles * SPAWN_DELAY_SECS)); break;
-                case ZhedBoard.FINISH_TILE: StartCoroutine(MakeWinnerTile(coords, numUsedTiles * SPAWN_DELAY_SECS)); break;
-                default: tileValue++; numUsedTiles--; break;
+        if (this.coolGraphics) {
+            TileController tile = this.valueTiles[coords].GetComponent<TileController>();
+            Coords currentCoords = tile.coords;
+            Destroy(tile.gameObject);        
+            StartCoroutine(MakeUsedTile(currentCoords, 0));
+
+            for (int tileValue = tile.tileValue, numUsedTiles = 1; tileValue > 0; tileValue--, numUsedTiles++) {
+                currentCoords = moveFunction(currentCoords);
+                if(!zhedBoard.inbounds(currentCoords))
+                    break;
+                switch (zhedBoard.TileValue(currentCoords)) {
+                    case ZhedBoard.EMPTY_TILE: StartCoroutine(MakeUsedTile(currentCoords, numUsedTiles * SPAWN_DELAY_SECS)); break;
+                    case ZhedBoard.FINISH_TILE: StartCoroutine(MakeWinnerTile(currentCoords, numUsedTiles * SPAWN_DELAY_SECS)); break;
+                    default: tileValue++; numUsedTiles--; break;
+                }
             }
         }
 
-        this.zhedBoard = ZhedBoard.SpreadTile(this.zhedBoard, tile.coords, moveFunction);
+        this.zhedBoard = ZhedBoard.SpreadTile(this.zhedBoard, coords, moveFunction);
 
 
         if (this.Winner()) {
@@ -242,34 +281,7 @@ public class GameManagerScript : MonoBehaviour
 
     private IEnumerator MakeWinnerTile(Coords coords, float delay) {
         yield return new WaitForSeconds(delay);
-        Destroy(finishTiles[coords.x + ":" + coords.y]);
+        Destroy(finishTiles[coords]);
         MakeTile(coords, finishTilePrefab, BoardTheme.selectedColor);          
-    }
-
-// ** Devia tar no zhedboard mas n queria tar  a por mais memoria  **// 
-
-    public List<Coords> GetTotalSpread(Coords coords) {
-        List<Coords> totalSpread = new List<Coords>();
-        totalSpread.AddRange(GetSpreadInDir(coords, Coords.MoveUp));
-        totalSpread.AddRange(GetSpreadInDir(coords, Coords.MoveDown));
-        totalSpread.AddRange(GetSpreadInDir(coords, Coords.MoveLeft));
-        totalSpread.AddRange(GetSpreadInDir(coords, Coords.MoveRight));
-        return totalSpread;        
-    }
-
-    public List<Coords> GetSpreadInDir(Coords coords, Func<Coords, Coords> moveFunction) {
-        int tileValue = zhedBoard.TileValue(coords);
-        List<Coords> coordList = new List<Coords>();
-        for (int i = 0; i < tileValue; i++) {
-            coords = moveFunction(coords);
-            if(!zhedBoard.inbounds(coords))
-                break;
-            switch (zhedBoard.TileValue(coords)) {
-                case ZhedBoard.EMPTY_TILE: coordList.Add(coords); break;
-                case ZhedBoard.FINISH_TILE: coordList.Add(coords); break;
-                default: i--; break;
-            }
-        }
-        return coordList;
     }
 }

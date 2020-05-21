@@ -1,15 +1,11 @@
 ﻿using UnityEngine;
 using MLAgents;
 
-using System;
 using System.Collections.Generic;
-using ZhedSolver;
 
 public class ZhedAgent : Agent
 {
     private GameManagerScript gameManager;
-
-    private float lastTime = 0;
 
     public override void InitializeAgent()
     {
@@ -34,17 +30,18 @@ public class ZhedAgent : Agent
         if (gameManager.zhedBoard == null)
             return;
 
-        if (Time.time - lastTime < 0.1f)
-            return;
-        lastTime = Time.time;
-        Debug.Log(vectorAction[0] + ":" + vectorAction[1]);
-
-        TileController[] tiles = gameObject.transform.parent.gameObject.GetComponentsInChildren<TileController>();
-        if (tiles.Length == 0) {
+        if (gameManager.Loser()) {
+            Done();
             return;
         }
+   
+       // Debug.Log(vectorAction[0] + ":" + vectorAction[1]);
 
-        int tileToPlay = Mathf.RoundToInt(vectorAction[1] + 1) / 2 * (tiles.Length - 1);
+        List<Coords> tiles = this.gameManager.zhedBoard.GetValueTilesCoords();
+        if (tiles.Count == 0)
+            return;
+
+        int tileToPlay = Mathf.RoundToInt(vectorAction[1] + 1) / 2 * (tiles.Count - 1);
         if (vectorAction[0] > 0.5)
             gameManager.Play(tiles[tileToPlay], Coords.MoveLeft);
         else if (vectorAction[0] > 0)
@@ -56,7 +53,6 @@ public class ZhedAgent : Agent
         if (gameManager.Loser())
         {
             SetReward(-20f);
-            Done();
         }
         else if (gameManager.Winner()) {
             SetReward(999999f);
