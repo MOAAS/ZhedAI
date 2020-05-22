@@ -20,7 +20,7 @@ public class ZhedAgent : Agent
             return;
 
        // AddVectorObs(center.position.z - gameObject.transform.position.z);
-        AddVectorObs(gameManager.zhedBoard.GetValueTiles().Count);
+       // AddVectorObs(gameManager.zhedBoard.GetValueTiles().Count);
 
         //List<List<int>> board = gameManager.zhedBoard.GetBoard();
     }
@@ -30,10 +30,12 @@ public class ZhedAgent : Agent
         if (gameManager.zhedBoard == null)
             return;
 
+        /*
         if (gameManager.Loser()) {
             Done();
             return;
         }
+        */
    
        // Debug.Log(vectorAction[0] + ":" + vectorAction[1]);
 
@@ -50,14 +52,16 @@ public class ZhedAgent : Agent
             gameManager.Play(tiles[tileToPlay], Coords.MoveRight);            
         else gameManager.Play(tiles[tileToPlay], Coords.MoveUp);
 
-        if (gameManager.Loser())
-        {
+        if (gameManager.Loser()) {
             SetReward(-20f);
+            Done();
         }
         else if (gameManager.Winner()) {
             SetReward(999999f);
         }
-        else SetReward(gameManager.zhedBoard.getBoardTotalMaxValue());
+        else {
+            SetReward(gameManager.zhedBoard.getBoardTotalMaxValue());
+        }
     }
 
     public override void AgentReset()

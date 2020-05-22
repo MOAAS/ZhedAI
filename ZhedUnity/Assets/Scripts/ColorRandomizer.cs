@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class ColorRandomizer : MonoBehaviour
 {
+    public float minimumDivisor = 1f;
+    public float maximumDivisor = 1.5f;
+
     // Start is called before the first frame update
     void Start()
     {        
@@ -16,8 +19,8 @@ public class ColorRandomizer : MonoBehaviour
         
     }
 
-    public static Color RandomizeColor(Color defaultColor) {
-        float divisor = Random.Range(1f, 1.5f);
+    private Color RandomizeColor(Color defaultColor) {
+        float divisor = Random.Range(minimumDivisor, maximumDivisor);        
         return BoardTheme.EndarkenColor(defaultColor, divisor);
     }
 }
