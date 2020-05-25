@@ -37,7 +37,6 @@ public class ZhedAgent : Agent
         // Debug.Log("Collecting");
        // SetMask();
 
-        sensor.AddObservation(gameManager.zhedBoard.GetValueTiles().Count);
         for(int i = 0; i < gridSize ;i++){
            sensor.AddObservation(gameManager.zhedBoard.getBoardRow(i, gridSize));
         }
