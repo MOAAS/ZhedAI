@@ -2,6 +2,9 @@
 using Unity.MLAgents;
 using Unity.MLAgents.Sensors;
 
+using System.Collections;
+using System.Collections.Generic;
+
 using ZhedSolver;
 
 public class ZhedAgent : Agent
@@ -12,18 +15,18 @@ public class ZhedAgent : Agent
     private float winReward = 500f;
     private float moveValueRewardMultiplier = 0f;
 
-    private int gridSize = 10;
+    private int gridSize = 8;
 
-    private int hits = 0;
-    private int misses = 0;
-    private int numWins = 0;
+    private AgentStats stats;
 
     private GameManagerScript gameManager;
 
     public override void Initialize()
     {
+        stats = new AgentStats();
         gameManager = GetComponentInParent<GameManagerScript>();
         SetResetParameters();
+
     }
 
     public override void CollectObservations(VectorSensor sensor)
@@ -34,6 +37,7 @@ public class ZhedAgent : Agent
         // Debug.Log("Collecting");
        // SetMask();
 
+        sensor.AddObservation(gameManager.zhedBoard.GetValueTiles().Count);
         for(int i = 0; i < gridSize ;i++){
            sensor.AddObservation(gameManager.zhedBoard.getBoardRow(i, gridSize));
         }
@@ -57,10 +61,11 @@ public class ZhedAgent : Agent
 
     public override void OnActionReceived(float[] vectorAction)
     {       
-        if (gameManager.zhedBoard == null)
+        ZhedBoard board = gameManager.zhedBoard;
+        if (board == null)
             return;
 
-        //List<Coords> tiles = this.gameManager.zhedBoard.GetValueTilesCoords();
+        //List<Coords> tiles = this.board.GetValueTilesCoords();
         //if (tiles.Count == 0)
         //    return;
 
@@ -70,13 +75,20 @@ public class ZhedAgent : Agent
         
         this.transform.position = this.gameManager.TilePos(move) + new Vector3(0, this.transform.position.y, 0);
         
-        if (!gameManager.zhedBoard.ValidMove(move)) {
-            misses++;
+        if (!board.ValidMove(move)) {
+            if (board.ValidMove(Coords.MoveUp(move)) ||
+                board.ValidMove(Coords.MoveDown(move)) ||
+                board.ValidMove(Coords.MoveLeft(move)) ||
+                board.ValidMove(Coords.MoveRight(move))) 
+            {
+                AddReward(this.moveMissReward / 2f);
+            }
+            this.stats.OnMiss();
             AddReward(this.moveMissReward);
             return;
         }
         else {
-            hits++;
+            this.stats.OnHit();
             AddReward(this.moveHitReward);    
         }
 
@@ -92,13 +104,14 @@ public class ZhedAgent : Agent
 
         if (gameManager.Loser()) {
             this.SetColor(Color.red);
-            AddReward(this.lossReward);
+            AddReward(this.lossReward * this.stats.MissRatio());
+            this.stats.OnLoss();
             EndEpisode();
         }
         else if (gameManager.Winner()) {
             this.SetColor(Color.green);
-            AddReward(this.winReward);
-            numWins++;
+            AddReward(this.winReward * this.stats.HitRatio());
+            this.stats.OnWin();
             EndEpisode();
         }
         else {
@@ -112,13 +125,15 @@ public class ZhedAgent : Agent
 
     public override void OnEpisodeBegin()
     {
-        float ratio = hits / (hits + misses + 0.00001f);
-        hits = 0;
-        misses = 0;
-        Academy.Instance.StatsRecorder.Add("Hit Ratio", ratio);
-        Academy.Instance.StatsRecorder.Add("Win Count", numWins);
-        Debug.Log("Ratio: " + ratio);
-        Debug.Log("Win count: " + numWins);
+        if (gameManager.zhedBoard == null)
+            return;
+
+        this.stats.Print();
+        Academy.Instance.StatsRecorder.Add("Hit Ratio", this.stats.HitRatio());
+        Academy.Instance.StatsRecorder.Add("Win Count", this.stats.NumWins());
+        Academy.Instance.StatsRecorder.Add("Win Ratio on Previous 5", this.stats.WinRatioLast5());
+        this.stats.Reset();
+
         gameManager.ResetLevel();
        // gameObject.transform.rotation = new Quaternion(0f, 0f, 0f, 0f);
        // gameObject.transform.position = center.position;
