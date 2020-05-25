@@ -82,8 +82,8 @@ public class ZhedAgent : Agent
             {
                 AddReward(this.moveMissReward / 2f);
             }
+            else AddReward(this.moveMissReward);
             this.stats.OnMiss();
-            AddReward(this.moveMissReward);
             return;
         }
         else {
@@ -109,7 +109,7 @@ public class ZhedAgent : Agent
         }
         else if (gameManager.Winner()) {
             this.SetColor(Color.green);
-            AddReward(this.winReward * this.stats.HitRatio());
+            AddReward(this.winReward);
             this.stats.OnWin();
             EndEpisode();
         }
