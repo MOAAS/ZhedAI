@@ -12,7 +12,7 @@ public class ZhedAgent : Agent
     private float moveMissReward = -0.1f;
     private float moveHitReward = 2f;
     private float lossReward = -5f;
-    private float winReward = 500f;
+    private float winReward = 50f;
     private float moveValueRewardMultiplier = 0f;
 
     private int gridSize = 8;
@@ -20,6 +20,19 @@ public class ZhedAgent : Agent
     private AgentStats stats;
 
     private GameManagerScript gameManager;
+
+    private List<ZhedBoard> zhedBoards = new List<ZhedBoard>(new ZhedBoard[] {
+        new ZhedBoard("Levels/level" + 1 + ".txt"),
+        new ZhedBoard("Levels/level" + 2 + ".txt"),
+        new ZhedBoard("Levels/level" + 3 + ".txt"),
+        new ZhedBoard("Levels/level" + 4 + ".txt"),
+        new ZhedBoard("Levels/level" + 5 + ".txt"),
+        new ZhedBoard("Levels/level" + 6 + ".txt"),
+        new ZhedBoard("Levels/level" + 7 + ".txt"),
+      // new ZhedBoard("Levels/level" + 8 + ".txt"),
+      // new ZhedBoard("Levels/level" + 9 + ".txt"),
+      // new ZhedBoard("Levels/level" + 10 + ".txt"),
+    });
 
     public override void Initialize()
     {
@@ -90,7 +103,6 @@ public class ZhedAgent : Agent
             this.stats.OnHit();
             AddReward(this.moveHitReward);    
         }
-
  
         switch (direction) {
             case 0: gameManager.Play(move, Coords.MoveUp); break;  
@@ -113,8 +125,9 @@ public class ZhedAgent : Agent
             this.stats.OnWin();
             EndEpisode();
         }
-        else {
-            AddReward(gameManager.zhedBoard.getBoardMaxValue() * this.moveValueRewardMultiplier);
+        else if (board.ValidMove(move)) {
+            AddReward(gameManager.zhedBoard.getBoardTotalMaxValue() - ZhedSolver.Solver.Heuristic2(gameManager.zhedBoard) * 0.01f);
+          //  AddReward(gameManager.zhedBoard.getBoardMaxValue() * this.moveValueRewardMultiplier);
         }
     }
 
@@ -127,13 +140,17 @@ public class ZhedAgent : Agent
         if (gameManager.zhedBoard == null)
             return;
 
+
         this.stats.Print();
         Academy.Instance.StatsRecorder.Add("Hit Ratio", this.stats.HitRatio());
         Academy.Instance.StatsRecorder.Add("Win Count", this.stats.NumWins());
         Academy.Instance.StatsRecorder.Add("Win Ratio on Previous 5", this.stats.WinRatioLast5());
         this.stats.Reset();
 
-        gameManager.ResetLevel();
+
+        gameManager.LoadLevel(this.zhedBoards[Random.Range(0, this.zhedBoards.Count)]);
+        //gameManager.ResetLevel();
+
        // gameObject.transform.rotation = new Quaternion(0f, 0f, 0f, 0f);
        // gameObject.transform.position = center.position;
        // m_BallRb.velocity = new Vector3(Random.Range(-1.5f, 1.5f), 0f, Random.Range(-1.5f, 1.5f));

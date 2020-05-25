@@ -142,6 +142,13 @@ public class GameManagerScript : MonoBehaviour
         GameObject.Find("Main Camera").transform.position = new Vector3(0, zhedBoard.height, -zhedBoard.height / 5.0f);
     }
 
+    public void LoadLevel(ZhedBoard board) {
+        this.initialZhedBoard = new ZhedBoard(board);
+        ResetLevel();
+        
+        //GameObject.Find("Main Camera").transform.position = new Vector3(0, zhedBoard.height, -zhedBoard.height / 5.0f);
+    }
+
     public Vector3 TilePos(Coords coords) {
         return new Vector3(coords.x + 0.5f - zhedBoard.width / 2.0f, 0, zhedBoard.height / 2.0f - coords.y - 0.5f) + transform.position;
     }

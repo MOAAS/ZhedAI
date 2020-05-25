@@ -127,7 +127,7 @@ namespace ZhedSolver
             return numUsedTiles;
         }
 
-        public int Heuristic2(ZhedBoard board) {
+        public static int Heuristic2(ZhedBoard board) {
             if (board.isOver)
                 return 0;
             List<int[]> valueTiles = board.GetValueTiles();
