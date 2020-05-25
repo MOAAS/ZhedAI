@@ -96,6 +96,7 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaAO: 1
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
+    m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
   m_UseShadowmask: 1
 --- !u!196 &4
@@ -172,6 +173,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -473,6 +475,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalPosition.y
       value: -0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8147018160489658409, guid: 4f0b63b1fb68da14eb15e6c398b7cb83,
+        type: 3}
+      propertyPath: m_BrainParameters.vectorObservationSize
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 8641554445141340813, guid: 4f0b63b1fb68da14eb15e6c398b7cb83,
         type: 3}
@@ -931,6 +938,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -1144,6 +1152,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -1411,6 +1420,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -1624,6 +1634,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -1873,6 +1884,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -2067,6 +2079,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalPosition.y
       value: -0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8147018160489658409, guid: 4f0b63b1fb68da14eb15e6c398b7cb83,
+        type: 3}
+      propertyPath: m_BrainParameters.vectorObservationSize
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 8641554445141340813, guid: 4f0b63b1fb68da14eb15e6c398b7cb83,
         type: 3}
@@ -3190,6 +3207,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -3706,8 +3724,9 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 705507993}
   m_Enabled: 1
-  serializedVersion: 9
+  serializedVersion: 10
   m_Type: 1
+  m_Shape: 0
   m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
   m_Intensity: 1
   m_Range: 10
@@ -4760,6 +4779,11 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: -0.1
       objectReference: {fileID: 0}
+    - target: {fileID: 8147018160489658409, guid: 4f0b63b1fb68da14eb15e6c398b7cb83,
+        type: 3}
+      propertyPath: m_BrainParameters.vectorObservationSize
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 8641554445141340813, guid: 4f0b63b1fb68da14eb15e6c398b7cb83,
         type: 3}
       propertyPath: m_Mesh
@@ -4919,6 +4943,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -5568,6 +5593,11 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: -0.1
       objectReference: {fileID: 0}
+    - target: {fileID: 8147018160489658409, guid: 4f0b63b1fb68da14eb15e6c398b7cb83,
+        type: 3}
+      propertyPath: m_BrainParameters.vectorObservationSize
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 8641554445141340813, guid: 4f0b63b1fb68da14eb15e6c398b7cb83,
         type: 3}
       propertyPath: m_Mesh
@@ -6012,6 +6042,11 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: -0.1
       objectReference: {fileID: 0}
+    - target: {fileID: 8147018160489658409, guid: 4f0b63b1fb68da14eb15e6c398b7cb83,
+        type: 3}
+      propertyPath: m_BrainParameters.vectorObservationSize
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 8641554445141340813, guid: 4f0b63b1fb68da14eb15e6c398b7cb83,
         type: 3}
       propertyPath: m_Mesh
@@ -6290,6 +6325,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -6526,6 +6562,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -6823,6 +6860,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -7034,6 +7072,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -7296,6 +7335,11 @@ PrefabInstance:
       propertyPath: youLose
       value: 
       objectReference: {fileID: 1316361760}
+    - target: {fileID: 8147018160489658409, guid: 4f0b63b1fb68da14eb15e6c398b7cb83,
+        type: 3}
+      propertyPath: m_BrainParameters.vectorObservationSize
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 8641554445141340813, guid: 4f0b63b1fb68da14eb15e6c398b7cb83,
         type: 3}
       propertyPath: m_Mesh
@@ -7429,6 +7473,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalPosition.y
       value: -0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8147018160489658409, guid: 4f0b63b1fb68da14eb15e6c398b7cb83,
+        type: 3}
+      propertyPath: m_BrainParameters.vectorObservationSize
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 8641554445141340813, guid: 4f0b63b1fb68da14eb15e6c398b7cb83,
         type: 3}
@@ -9449,6 +9498,11 @@ PrefabInstance:
       propertyPath: youLose
       value: 
       objectReference: {fileID: 1316361760}
+    - target: {fileID: 8147018160489658409, guid: 4f0b63b1fb68da14eb15e6c398b7cb83,
+        type: 3}
+      propertyPath: m_BrainParameters.vectorObservationSize
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 8641554445141340813, guid: 4f0b63b1fb68da14eb15e6c398b7cb83,
         type: 3}
       propertyPath: m_Mesh
@@ -9563,6 +9617,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -9608,6 +9663,11 @@ PrefabInstance:
       propertyPath: youLose
       value: 
       objectReference: {fileID: 1316361760}
+    - target: {fileID: 8147018160489658409, guid: 4f0b63b1fb68da14eb15e6c398b7cb83,
+        type: 3}
+      propertyPath: m_BrainParameters.vectorObservationSize
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 8641554445141340813, guid: 4f0b63b1fb68da14eb15e6c398b7cb83,
         type: 3}
       propertyPath: m_Mesh

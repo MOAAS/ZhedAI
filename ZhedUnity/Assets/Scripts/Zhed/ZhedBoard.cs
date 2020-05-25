@@ -206,6 +206,51 @@ namespace ZhedSolver
             return valueTiles;
         }
 
+        public List<float> getBoardRow(int row){
+            List<float> list = new List<float>(new float[10]);
+            if(row < this.height){
+                for(int i = 0; i< this.width; i++){
+                    list[i] = board[row][i];
+                }
+            }
+            return list;
+        }
+/*
+        public List<float> getBoardRow(int row){
+            List<float> list = new List<float>(new float[10]);
+            if(row < this.height){
+                for(int i = 0; i< this.width; i++){
+                    list[i] = board[row][i];
+                }
+            }
+            return list;
+        }
+*/
+
+        public int getValueTilesSize(){
+            return valueTiles.Count;
+        }
+
+        public List<float> getValueTile(int num){
+            List<float> list = new List<float>(); 
+            if(num < valueTiles.Count){
+                list.Add(num);
+                list.Add(valueTiles[num][0]);
+                list.Add(valueTiles[num][1]);
+                list.Add(valueTiles[num][2]);
+                return list;
+            }
+            return new List<float>(){num,-10,-10,-10};
+        }
+
+        public List<float> getFinishTile(){
+            List<float> list = new List<float>(); 
+            list.Add(finishTiles[0][0]);
+            list.Add(finishTiles[0][1]);
+            list.Add(-2);
+            return list;
+        }
+
         public List<Coords> GetValueTilesCoords() {
             return this.valueTilesCoords;
         }
