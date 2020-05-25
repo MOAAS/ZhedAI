@@ -142,7 +142,7 @@ public class GameManagerScript : MonoBehaviour
         GameObject.Find("Main Camera").transform.position = new Vector3(0, zhedBoard.height, -zhedBoard.height / 5.0f);
     }
 
-    Vector3 TilePos(Coords coords) {
+    public Vector3 TilePos(Coords coords) {
         return new Vector3(coords.x + 0.5f - zhedBoard.width / 2.0f, 0, zhedBoard.height / 2.0f - coords.y - 0.5f) + transform.position;
     }
 
@@ -227,6 +227,10 @@ public class GameManagerScript : MonoBehaviour
     public void Play(Coords coords, Func<Coords, Coords> moveFunction) {  
         if (gameOver)
             return;
+        if (!this.zhedBoard.ValidMove(coords)) {
+            Debug.Log("Invalid move: " + coords);
+            return;
+        }
 
 
         if (this.coolGraphics) {

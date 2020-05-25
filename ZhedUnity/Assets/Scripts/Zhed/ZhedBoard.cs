@@ -186,12 +186,17 @@ namespace ZhedSolver
             this.valueTilesCoords.RemoveAll(coord => coord.x == coords.x && coord.y == coords.y);
         }
 
+
         public bool inbounds(Coords coords){
             return coords.x >= 0 && coords.y >= 0 && coords.x < width && coords.y < height;
         }
 
         public int TileValue(Coords coords) {
             return this.board[coords.y][coords.x];
+        }
+
+        public bool ValidMove(Coords coords) {
+            return inbounds(coords) && TileValue(coords) > 0;
         }
 
         private int SetTile(Coords coords, int value) {
@@ -208,6 +213,16 @@ namespace ZhedSolver
 
         public List<Coords> GetValueTilesCoords() {
             return this.valueTilesCoords;
+        }
+
+        public List<float> getBoardRow(int row, int width){
+            List<float> list = new List<float>(new float[width]);
+            if(row < this.height){
+                for(int i = 0; i< this.width; i++){
+                    list[i] = board[row][i];
+                }
+            }
+            return list;
         }
 
         public List<List<int>> GetBoard() {

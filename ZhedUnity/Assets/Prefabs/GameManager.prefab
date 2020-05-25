@@ -195,8 +195,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3832736803787951533}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 3, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 1.5, z: 0}
+  m_LocalScale: {x: 0.6, y: 0.8, z: 0.6}
   m_Children: []
   m_Father: {fileID: 8645522841418199256}
   m_RootOrder: 1
@@ -274,12 +274,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BrainParameters:
-    vectorObservationSize: 0
+    vectorObservationSize: 100
     numStackedVectorObservations: 1
-    vectorActionSize: 02000000
+    vectorActionSize: 0400000064000000
     vectorActionDescriptions: []
-    vectorActionSpaceType: 1
-  m_Model: {fileID: 0}
+    vectorActionSpaceType: 0
+  m_Model: {fileID: 5022602860645237092, guid: 16275a94d818758478b77c2be37b2371, type: 3}
   m_InferenceDevice: 0
   m_BehaviorType: 0
   m_BehaviorName: Zhed
@@ -391,7 +391,7 @@ PrefabInstance:
     - target: {fileID: 2966240125979584353, guid: a2cab3133ce26fe49b34b4cdad9b06e6,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.1
+      value: 0.01
       objectReference: {fileID: 0}
     - target: {fileID: 2966240125979584353, guid: a2cab3133ce26fe49b34b4cdad9b06e6,
         type: 3}
