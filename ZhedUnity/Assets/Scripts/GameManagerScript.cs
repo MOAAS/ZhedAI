@@ -54,6 +54,13 @@ public class GameManagerScript : MonoBehaviour
         this.coolGraphics = false;
     }
 
+    public void LoadLevel(ZhedBoard board) {
+        this.initialZhedBoard = new ZhedBoard(board);
+        ResetLevel();
+
+        //GameObject.Find("Main Camera").transform.position = new Vector3(0, zhedBoard.height, -zhedBoard.height / 5.0f);
+    }
+
 
 
     public void Hint() {

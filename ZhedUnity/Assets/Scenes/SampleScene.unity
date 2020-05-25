@@ -476,11 +476,6 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: -0.1
       objectReference: {fileID: 0}
-    - target: {fileID: 8147018160489658409, guid: 4f0b63b1fb68da14eb15e6c398b7cb83,
-        type: 3}
-      propertyPath: m_BrainParameters.vectorObservationSize
-      value: 10
-      objectReference: {fileID: 0}
     - target: {fileID: 8641554445141340813, guid: 4f0b63b1fb68da14eb15e6c398b7cb83,
         type: 3}
       propertyPath: m_Mesh
@@ -2079,11 +2074,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalPosition.y
       value: -0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8147018160489658409, guid: 4f0b63b1fb68da14eb15e6c398b7cb83,
-        type: 3}
-      propertyPath: m_BrainParameters.vectorObservationSize
-      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 8641554445141340813, guid: 4f0b63b1fb68da14eb15e6c398b7cb83,
         type: 3}
@@ -4779,11 +4769,6 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: -0.1
       objectReference: {fileID: 0}
-    - target: {fileID: 8147018160489658409, guid: 4f0b63b1fb68da14eb15e6c398b7cb83,
-        type: 3}
-      propertyPath: m_BrainParameters.vectorObservationSize
-      value: 10
-      objectReference: {fileID: 0}
     - target: {fileID: 8641554445141340813, guid: 4f0b63b1fb68da14eb15e6c398b7cb83,
         type: 3}
       propertyPath: m_Mesh
@@ -5593,11 +5578,6 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: -0.1
       objectReference: {fileID: 0}
-    - target: {fileID: 8147018160489658409, guid: 4f0b63b1fb68da14eb15e6c398b7cb83,
-        type: 3}
-      propertyPath: m_BrainParameters.vectorObservationSize
-      value: 10
-      objectReference: {fileID: 0}
     - target: {fileID: 8641554445141340813, guid: 4f0b63b1fb68da14eb15e6c398b7cb83,
         type: 3}
       propertyPath: m_Mesh
@@ -6041,11 +6021,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalPosition.y
       value: -0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8147018160489658409, guid: 4f0b63b1fb68da14eb15e6c398b7cb83,
-        type: 3}
-      propertyPath: m_BrainParameters.vectorObservationSize
-      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 8641554445141340813, guid: 4f0b63b1fb68da14eb15e6c398b7cb83,
         type: 3}
@@ -7335,11 +7310,6 @@ PrefabInstance:
       propertyPath: youLose
       value: 
       objectReference: {fileID: 1316361760}
-    - target: {fileID: 8147018160489658409, guid: 4f0b63b1fb68da14eb15e6c398b7cb83,
-        type: 3}
-      propertyPath: m_BrainParameters.vectorObservationSize
-      value: 10
-      objectReference: {fileID: 0}
     - target: {fileID: 8641554445141340813, guid: 4f0b63b1fb68da14eb15e6c398b7cb83,
         type: 3}
       propertyPath: m_Mesh
@@ -7473,11 +7443,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalPosition.y
       value: -0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8147018160489658409, guid: 4f0b63b1fb68da14eb15e6c398b7cb83,
-        type: 3}
-      propertyPath: m_BrainParameters.vectorObservationSize
-      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 8641554445141340813, guid: 4f0b63b1fb68da14eb15e6c398b7cb83,
         type: 3}
@@ -9498,11 +9463,6 @@ PrefabInstance:
       propertyPath: youLose
       value: 
       objectReference: {fileID: 1316361760}
-    - target: {fileID: 8147018160489658409, guid: 4f0b63b1fb68da14eb15e6c398b7cb83,
-        type: 3}
-      propertyPath: m_BrainParameters.vectorObservationSize
-      value: 10
-      objectReference: {fileID: 0}
     - target: {fileID: 8641554445141340813, guid: 4f0b63b1fb68da14eb15e6c398b7cb83,
         type: 3}
       propertyPath: m_Mesh
@@ -9663,11 +9623,6 @@ PrefabInstance:
       propertyPath: youLose
       value: 
       objectReference: {fileID: 1316361760}
-    - target: {fileID: 8147018160489658409, guid: 4f0b63b1fb68da14eb15e6c398b7cb83,
-        type: 3}
-      propertyPath: m_BrainParameters.vectorObservationSize
-      value: 10
-      objectReference: {fileID: 0}
     - target: {fileID: 8641554445141340813, guid: 4f0b63b1fb68da14eb15e6c398b7cb83,
         type: 3}
       propertyPath: m_Mesh

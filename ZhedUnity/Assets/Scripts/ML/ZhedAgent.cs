@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using ZhedSolver;
 using Unity.MLAgents;
 using Unity.MLAgents.Sensors;
 
@@ -10,6 +11,28 @@ public class ZhedAgent : Agent
 
     private int numWins;
     private Dictionary<float,float[]> valuetilesMap = null;
+
+    private List<ZhedBoard> zhedBoards = new List<ZhedBoard>(new ZhedBoard[] {
+        //new ZhedBoard("Levels/level" + 1 + ".txt"),
+        //new ZhedBoard("Levels/level" + 2 + ".txt"),
+        //new ZhedBoard("Levels/level" + 3 + ".txt"),
+        //new ZhedBoard("Levels/level" + 4 + ".txt"),
+        new ZhedBoard("Levels/levelx" + 1 + ".txt"),
+        new ZhedBoard("Levels/levelx" + 2 + ".txt"),
+        new ZhedBoard("Levels/levelx" + 3 + ".txt"),
+        new ZhedBoard("Levels/levelx" + 4 + ".txt"),
+        new ZhedBoard("Levels/levelx" + 5 + ".txt"),
+        new ZhedBoard("Levels/levelx" + 6 + ".txt"),
+        new ZhedBoard("Levels/levelx" + 7 + ".txt"),
+        new ZhedBoard("Levels/level" + 5 + ".txt"),
+        new ZhedBoard("Levels/level" + 6 + ".txt"),
+        new ZhedBoard("Levels/level" + 7 + ".txt"),
+        //new ZhedBoard("Levels/level" + 8 + ".txt"),
+        //new ZhedBoard("Levels/level" + 9 + ".txt"),
+        //new ZhedBoard("Levels/level" + 10 + ".txt"),
+        //new ZhedBoard("Levels/level" + 11 + ".txt"),
+        //new ZhedBoard("Levels/level" + 12 + ".txt"),
+    });
 
     public override void Initialize()
     {
@@ -92,7 +115,7 @@ public class ZhedAgent : Agent
        }
        /*
        for(int i = 0; i<10 ;i++){
-          AddVectorObs(gameManager.zhedBoard.getBoardRow(i));
+          sensor.AddObservation(gameManager.zhedBoard.getBoardRow(i));
        }
        */
 /*
@@ -116,7 +139,7 @@ public class ZhedAgent : Agent
                     actionIndicesList.Add((int)entry.Key);
             }
             int[] actionIndices = actionIndicesList.ToArray();
-            //Debug.Log(actionIndices.Length);
+            Debug.Log(actionIndices.Length);
 
             actionMasker.SetMask(1, actionIndices);
         }
@@ -148,10 +171,12 @@ public class ZhedAgent : Agent
         if (gameManager.Loser()) {
             //Debug.Log("gamer");
             valuetilesMap = null;
+            this.SetColor(Color.red);
             AddReward(-5f);
             EndEpisode();
         }
         else if (gameManager.Winner()) {
+            this.SetColor(Color.green);
             valuetilesMap = null;
             AddReward(200f);
             numWins++;
@@ -166,6 +191,7 @@ public class ZhedAgent : Agent
     public override void OnEpisodeBegin()
     {
         gameManager.ResetLevel();
+        //gameManager.LoadLevel(this.zhedBoards[Random.Range(0, this.zhedBoards.Count)]);
         Academy.Instance.StatsRecorder.Add("Win Count",numWins);
         valuetilesMap = null;
        // gameObject.transform.rotation = new Quaternion(0f, 0f, 0f, 0f);
@@ -188,6 +214,10 @@ public class ZhedAgent : Agent
     public void SetResetParameters()
     {
 
+    }
+
+    public void SetColor(Color color) {
+        this.GetComponent<Renderer>().material.color = color;
     }
 
 }
