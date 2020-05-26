@@ -148,8 +148,8 @@ public class ZhedAgent : Agent
         this.stats.Reset();
 
 
-        gameManager.LoadLevel(this.zhedBoards[Random.Range(0, this.zhedBoards.Count)]);
-        //gameManager.ResetLevel();
+       // gameManager.LoadLevel(this.zhedBoards[Random.Range(0, this.zhedBoards.Count)]);
+        gameManager.ResetLevel();
 
        // gameObject.transform.rotation = new Quaternion(0f, 0f, 0f, 0f);
        // gameObject.transform.position = center.position;

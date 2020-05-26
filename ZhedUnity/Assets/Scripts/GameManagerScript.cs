@@ -263,9 +263,11 @@ public class GameManagerScript : MonoBehaviour
 
         if (this.Winner()) {
             youWin.SetActive(true);
+            youLose.SetActive(false);
             gameOver = true;
         }
         else if (this.Loser()) {
+            youWin.SetActive(false);
             youLose.SetActive(true);
             gameOver = true;
         }
