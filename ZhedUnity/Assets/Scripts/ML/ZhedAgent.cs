@@ -21,14 +21,23 @@ public class ZhedAgent : Agent
 
     private GameManagerScript gameManager;
 
+    private ZhedBoard level10 =  new ZhedBoard("Levels/level" + 10 + ".txt");
+
     private List<ZhedBoard> zhedBoards = new List<ZhedBoard>(new ZhedBoard[] {
         new ZhedBoard("Levels/level" + 1 + ".txt"),
         new ZhedBoard("Levels/level" + 2 + ".txt"),
         new ZhedBoard("Levels/level" + 3 + ".txt"),
         new ZhedBoard("Levels/level" + 4 + ".txt"),
         new ZhedBoard("Levels/level" + 5 + ".txt"),
-        new ZhedBoard("Levels/level" + 6 + ".txt"),
-        new ZhedBoard("Levels/level" + 7 + ".txt"),
+        //new ZhedBoard("Levels/level" + 6 + ".txt"),
+        //new ZhedBoard("Levels/level" + 7 + ".txt"),
+        new ZhedBoard("Levels/levelx" + 1 + ".txt"),
+        new ZhedBoard("Levels/levelx" + 2 + ".txt"),
+        new ZhedBoard("Levels/levelx" + 3 + ".txt"),
+        new ZhedBoard("Levels/levelx" + 4 + ".txt"),
+        new ZhedBoard("Levels/levelx" + 5 + ".txt"),
+        new ZhedBoard("Levels/levelx" + 6 + ".txt"),
+       // new ZhedBoard("Levels/levelx" + 7 + ".txt"),
       // new ZhedBoard("Levels/level" + 8 + ".txt"),
       // new ZhedBoard("Levels/level" + 9 + ".txt"),
       // new ZhedBoard("Levels/level" + 10 + ".txt"),
@@ -88,14 +97,14 @@ public class ZhedAgent : Agent
         this.transform.position = this.gameManager.TilePos(move) + new Vector3(0, this.transform.position.y, 0);
         
         if (!board.ValidMove(move)) {
-            if (board.ValidMove(Coords.MoveUp(move)) ||
-                board.ValidMove(Coords.MoveDown(move)) ||
-                board.ValidMove(Coords.MoveLeft(move)) ||
-                board.ValidMove(Coords.MoveRight(move))) 
-            {
-                AddReward(this.moveMissReward / 2f);
-            }
-            else AddReward(this.moveMissReward);
+          // if (board.ValidMove(Coords.MoveUp(move)) ||
+          //     board.ValidMove(Coords.MoveDown(move)) ||
+          //     board.ValidMove(Coords.MoveLeft(move)) ||
+          //     board.ValidMove(Coords.MoveRight(move))) 
+          // {
+          //     AddReward(this.moveMissReward / 2f);
+          // }
+            AddReward(this.moveMissReward);
             this.stats.OnMiss();
             return;
         }
@@ -115,7 +124,7 @@ public class ZhedAgent : Agent
 
         if (gameManager.Loser()) {
             this.SetColor(Color.red);
-            AddReward(this.lossReward * this.stats.MissRatio());
+            AddReward(this.lossReward);// * Mathf.Max(0.5f, this.stats.MissRatio()));
             this.stats.OnLoss();
             EndEpisode();
         }
@@ -126,7 +135,7 @@ public class ZhedAgent : Agent
             EndEpisode();
         }
         else if (board.ValidMove(move)) {
-            AddReward(gameManager.zhedBoard.getBoardTotalMaxValue() - ZhedSolver.Solver.Heuristic2(gameManager.zhedBoard) * 0.01f);
+           // AddReward(gameManager.zhedBoard.getBoardTotalMaxValue() - ZhedSolver.Solver.Heuristic2(gameManager.zhedBoard) * 0.0075f);
           //  AddReward(gameManager.zhedBoard.getBoardMaxValue() * this.moveValueRewardMultiplier);
         }
     }
@@ -149,7 +158,8 @@ public class ZhedAgent : Agent
 
 
        // gameManager.LoadLevel(this.zhedBoards[Random.Range(0, this.zhedBoards.Count)]);
-        gameManager.ResetLevel();
+        gameManager.LoadLevel(level10);
+        //gameManager.ResetLevel();
 
        // gameObject.transform.rotation = new Quaternion(0f, 0f, 0f, 0f);
        // gameObject.transform.position = center.position;

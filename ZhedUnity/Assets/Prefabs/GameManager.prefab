@@ -279,8 +279,8 @@ MonoBehaviour:
     VectorActionSize: 0400000040000000
     VectorActionDescriptions: []
     VectorActionSpaceType: 0
-  m_Model: {fileID: 5022602860645237092, guid: e3f80cc0e8a606d4998bb1bc302f2d21, type: 3}
-  m_InferenceDevice: 0
+  m_Model: {fileID: 5022602860645237092, guid: 540f7d77befcda848a91c3489da0d8a2, type: 3}
+  m_InferenceDevice: 1
   m_BehaviorType: 0
   m_BehaviorName: Zhed
   TeamId: 0
