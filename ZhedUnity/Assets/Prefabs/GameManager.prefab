@@ -195,8 +195,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3832736803787951533}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 3, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 1.5, z: 0}
+  m_LocalScale: {x: 0.6, y: 0.8, z: 0.6}
   m_Children: []
   m_Father: {fileID: 8645522841418199256}
   m_RootOrder: 1
@@ -274,16 +274,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BrainParameters:
-    vectorObservationSize: 0
-    numStackedVectorObservations: 1
-    vectorActionSize: 02000000
-    vectorActionDescriptions: []
-    vectorActionSpaceType: 1
-  m_Model: {fileID: 0}
-  m_InferenceDevice: 0
+    VectorObservationSize: 64
+    NumStackedVectorObservations: 1
+    VectorActionSize: 0400000040000000
+    VectorActionDescriptions: []
+    VectorActionSpaceType: 0
+  m_Model: {fileID: 5022602860645237092, guid: 540f7d77befcda848a91c3489da0d8a2, type: 3}
+  m_InferenceDevice: 1
   m_BehaviorType: 0
   m_BehaviorName: Zhed
-  m_TeamID: 0
+  TeamId: 0
   m_UseChildSensors: 1
 --- !u!114 &7119866211713069081
 MonoBehaviour:
@@ -300,7 +300,7 @@ MonoBehaviour:
   agentParameters:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
-  maxStep: 0
+  MaxStep: 0
 --- !u!114 &4375601871911718966
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -314,8 +314,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DecisionPeriod: 10
-  RepeatAction: 1
-  offsetStep: 0
+  TakeActionsBetweenDecisions: 1
 --- !u!1001 &8830207272072083438
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -391,7 +390,7 @@ PrefabInstance:
     - target: {fileID: 2966240125979584353, guid: a2cab3133ce26fe49b34b4cdad9b06e6,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.1
+      value: 0.01
       objectReference: {fileID: 0}
     - target: {fileID: 2966240125979584353, guid: a2cab3133ce26fe49b34b4cdad9b06e6,
         type: 3}
